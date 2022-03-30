@@ -4,19 +4,25 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: -3820654569075431746
-    second: assets_main_0
+    second: menu1
   - first:
       213: 2246648834969061079
-    second: assets_main_1
+    second: menu2
   - first:
       213: 8003762035294233788
-    second: assets_main_2
+    second: box_bg
   - first:
       213: 6897712772316148016
-    second: assets_main_3
+    second: box_selected
   - first:
       213: -5496853538992281045
-    second: assets_main_4
+    second: box
+  - first:
+      213: -7596060312114284942
+    second: button_inactive
+  - first:
+      213: 2028268187806268776
+    second: button_active
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -130,7 +136,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: assets_main_0
+      name: menu1
       rect:
         serializedVersion: 2
         x: 40
@@ -139,7 +145,7 @@ TextureImporter:
         height: 504
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 74, y: 81, z: 64, w: 164}
+      border: {x: 74, y: 81, z: 64, w: 220}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -151,7 +157,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: assets_main_1
+      name: menu2
       rect:
         serializedVersion: 2
         x: 576
@@ -172,7 +178,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: assets_main_2
+      name: box_bg
       rect:
         serializedVersion: 2
         x: 52
@@ -193,7 +199,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: assets_main_3
+      name: box_selected
       rect:
         serializedVersion: 2
         x: 207
@@ -214,7 +220,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: assets_main_4
+      name: box
       rect:
         serializedVersion: 2
         x: 355
@@ -230,6 +236,48 @@ TextureImporter:
       bones: []
       spriteID: b2a240274d047b3b0800000000000000
       internalID: -5496853538992281045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: button_inactive
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 1235
+        width: 226
+        height: 115
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 28, y: 31, z: 29, w: 29}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2763cfb446f559690800000000000000
+      internalID: -7596060312114284942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: button_active
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 1233
+        width: 228
+        height: 115
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 30, y: 27, z: 28, w: 28}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86dfa6bab2bd52c10800000000000000
+      internalID: 2028268187806268776
       vertices: []
       indices: 
       edges: []
