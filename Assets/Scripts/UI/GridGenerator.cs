@@ -10,11 +10,17 @@ public class GridGenerator : MonoBehaviour
     public static int colums = 10;
     public Vector2 gridPosition;
     public bool clearGrid = false;
+    public bool updateGrid = false;
     public static Transform[,] grid;
 
     public Transform box;
 
     // Start is called before the first frame update
+    private void Start()
+    {
+        grid = new Transform[colums, rows];
+    }
+
     void OnEnable()
     {
         box = GameObject.Find("BoxBg").transform;
@@ -33,6 +39,9 @@ public class GridGenerator : MonoBehaviour
 
     void CreateGrid()
     {
+        if (!updateGrid)
+            return;
+
         if(box == null)
         {
             Debug.Log("BoxBg not found!");
@@ -40,8 +49,6 @@ public class GridGenerator : MonoBehaviour
         }
 
         RemoveGrid();
-
-        grid = new Transform[colums, rows];
 
         for (int y = 0; y < rows; y++)
         {
@@ -75,7 +82,7 @@ public class GridGenerator : MonoBehaviour
     public static Vector2 RoundVec2(Vector2 v)
     {
        return new Vector2(Mathf.Round(v.x),
-                           Mathf.Round(v.y));
+                          Mathf.Round(v.y));
     }
 
     public static bool InsideBorder(Vector2 pos)
