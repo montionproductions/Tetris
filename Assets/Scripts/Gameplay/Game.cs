@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Game : MonoBehaviour
@@ -73,7 +74,7 @@ public class Game : MonoBehaviour
 
     public void Restart()
     {
-        Grup[] allGrups = GameObject.FindObjectsOfType<Grup>();
+        /*Grup[] allGrups = GameObject.FindObjectsOfType<Grup>();
         for(int i = 0; i < allGrups.Length; i++)
         {
             Destroy(allGrups[i].transform.gameObject);
@@ -87,7 +88,10 @@ public class Game : MonoBehaviour
         Resume();
         InitGame();
 
-        GameObject.Find("GameOverMenu").gameObject.SetActive(false);
+        GameObject.Find("GameOverMenu").gameObject.SetActive(false);*/
+
+        Time.timeScale = 1;
+        SceneManager.LoadScene(0);
     }
 
     public void GameOver()

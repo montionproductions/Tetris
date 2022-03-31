@@ -174,6 +174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4801408971912647348}
   - component: {fileID: 8514194707843417130}
+  - component: {fileID: -1949170358102031756}
   m_Layer: 0
   m_Name: L
   m_TagString: Untagged
@@ -212,6 +213,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameController: {fileID: 0}
+--- !u!114 &-1949170358102031756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7308996778474461645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e5c9c4aa3e9bd34ea6893c4263754dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectSwipeOnlyAfterRelease: 1
+  SWIPE_THRESHOLD: 20
 --- !u!1 &7437344061526746766
 GameObject:
   m_ObjectHideFlags: 0
