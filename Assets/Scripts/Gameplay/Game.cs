@@ -7,11 +7,9 @@ using UnityEngine.UI;
 public class Game : MonoBehaviour
 {
     public Transform[] figures;
-    public Color[] colors = new Color[6];
 
     public Transform[] figuresPreview;
     public Transform[] nextFiguresSpawnPoints;
-    public Color[] figuresPreviewColors = new Color[3];
 
     public float spawnTime;
     public Transform spawnPoint;
@@ -74,22 +72,6 @@ public class Game : MonoBehaviour
 
     public void Restart()
     {
-        /*Grup[] allGrups = GameObject.FindObjectsOfType<Grup>();
-        for(int i = 0; i < allGrups.Length; i++)
-        {
-            Destroy(allGrups[i].transform.gameObject);
-        }
-
-        for(int i = 0; i < nextFiguresSpawnPoints.Length; i++)
-        {
-            Destroy(nextFiguresSpawnPoints[i].GetChild(0).gameObject);
-        }
-
-        Resume();
-        InitGame();
-
-        GameObject.Find("GameOverMenu").gameObject.SetActive(false);*/
-
         Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
@@ -108,9 +90,8 @@ public class Game : MonoBehaviour
     {   
         for(int i = 0; i < 3; i++)
         {
-            _nextFigures[i] = Random.Range(0, figures.Length - 1);
+            _nextFigures[i] = Random.Range(0, figures.Length);
             _nextFiguresObjects[i] = Instantiate(figuresPreview[_nextFigures[i]], nextFiguresSpawnPoints[i]);
-            figuresPreviewColors[i] = colors[Random.Range(0, colors.Length - 1)];
         }
     }
 
@@ -118,35 +99,24 @@ public class Game : MonoBehaviour
     {
         _nextFigures[0] = _nextFigures[1];
         _nextFigures[1] = _nextFigures[2];
-        _nextFigures[2] = Random.Range(0, figures.Length - 1);
-
-        figuresPreviewColors[0] = figuresPreviewColors[1];
-        figuresPreviewColors[1] = figuresPreviewColors[2];
-        figuresPreviewColors[2] = colors[Random.Range(0, colors.Length -1)];
+        _nextFigures[2] = Random.Range(0, figures.Length);
+        if (_nextFigures[2] == _nextFigures[1])
+        {
+            _nextFigures[2] = Random.Range(0, figures.Length);
+        }
 
         for (int i = 0; i < 3; i++)
         {
             Destroy(_nextFiguresObjects[i].gameObject);
             
             _nextFiguresObjects[i] = Instantiate(figuresPreview[_nextFigures[i]], nextFiguresSpawnPoints[i]);
-
-            foreach (Transform child in _nextFiguresObjects[i])
-            {
-                child.GetComponent<SpriteRenderer>().color = figuresPreviewColors[i];
-            }
         }
     }
 
     public Transform SpawnRandomFigure()
     {
-        _getNextFigure();
         Transform obj = Instantiate(figures[_nextFigures[0]], spawnPoint.transform.position, Quaternion.identity);
-
-        foreach (Transform child in obj)
-        {
-            child.GetComponent<SpriteRenderer>().color = figuresPreviewColors[0];
-        }
-
+        _getNextFigure();
 
         return obj;
     }

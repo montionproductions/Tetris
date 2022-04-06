@@ -3518,7 +3518,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 436770724}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: 16, z: 0}
+  m_LocalPosition: {x: 4, y: 18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4254,13 +4254,6 @@ MonoBehaviour:
   - {fileID: 6676141564316845011, guid: 6a1c2105191d4d1448c2e1f957aa7bc2, type: 3}
   - {fileID: 1080178453155293627, guid: 9e1228d21dd4ddf4b95af08898e5d3a7, type: 3}
   - {fileID: 1407890128941053256, guid: 79dc8ddac6287a649a4a9051c588972f, type: 3}
-  colors:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0.50096804, g: 0.495283, b: 1, a: 1}
-  - {r: 0, g: 1, b: 0.18414831, a: 1}
-  - {r: 1, g: 0, b: 0.82725763, a: 1}
-  - {r: 0, g: 0.5021185, b: 0.5943396, a: 1}
-  - {r: 1, g: 0.59399676, b: 0, a: 1}
   figuresPreview:
   - {fileID: 4564993636817440175, guid: e05b2b4d7105c0c4ab939586b860aec6, type: 3}
   - {fileID: 1427501953679356848, guid: ea57330e5b216374da38c0085d4956df, type: 3}
@@ -4273,10 +4266,6 @@ MonoBehaviour:
   - {fileID: 1052155369}
   - {fileID: 553241218}
   - {fileID: 245143365}
-  figuresPreviewColors:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
   spawnTime: 2
   spawnPoint: {fileID: 436770725}
   movSpeed: 1

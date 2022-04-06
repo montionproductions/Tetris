@@ -157,9 +157,11 @@ public class Grup : MonoBehaviour
                 return false;
 
             // Block in grid cell (and not part of same group)?
-            
-            if((int)v.y == 20 || (int)v.x == 10)
+
+            if ((int)v.y == 20 || (int)v.x == 10)
+            {
                 Debug.Log((int)v.x + ", " + (int)v.y);
+            }
 
             if (GridGenerator.grid[(int)v.x, (int)v.y] != null && GridGenerator.grid[(int)v.x, (int)v.y].parent != transform) {
                 return false;
