@@ -94,7 +94,8 @@ public class GridGenerator : MonoBehaviour
     {
         for (int elementRow = 0; elementRow < colums; ++elementRow)
         {
-            Destroy(grid[elementRow, row].gameObject);
+            //Destroy(grid[elementRow, row].gameObject);
+            grid[elementRow, row].gameObject.SendMessage("DeleteBox", 1);
             grid[elementRow, row] = null;
         }
     }
@@ -110,7 +111,7 @@ public class GridGenerator : MonoBehaviour
                 grid[elementRow, row] = null;
 
                 // Update Block position
-                grid[elementRow, row - 1].position += new Vector3(0, -1, 0);
+                grid[elementRow, row - 1].gameObject.SendMessage("MoveDown");
             }
         }
     }

@@ -185,7 +185,6 @@ public class Grup : MonoBehaviour
 
     void UpdateGrid()
     {
-        //Debug.Log("Update grup");
         // Remove old children from grid
         for (int y = 0; y < GridGenerator.rows; ++y)
             for (int x = 0; x < GridGenerator.colums; ++x)
@@ -230,16 +229,6 @@ public class Grup : MonoBehaviour
 
                 // It's not valid. revert.
                 boxSelectedObj.position += new Vector3(0, 1, 0);
-
-                //_diference = transform.position.y - boxSelectedObj.position.y;
-
-                //if (_diference <= 4)
-                //{
-                //    Debug.Log("Liminte con: " + _diference);
-                //    _diference = 0;
-                //    boxSelectedObj.position = new Vector3(transform.position.x, boxSelectedObj.position.y + (4 - _diference), 0);
-                //    return;
-                //}
             }
         }
 
