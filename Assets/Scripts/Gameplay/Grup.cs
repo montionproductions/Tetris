@@ -5,8 +5,12 @@ using UnityEngine;
 public class Grup : MonoBehaviour
 {
     public Game gameController;
+    public Transform boxSelected;
+
+    private Transform boxSelectedObj;
 
     float lastFall = 0;
+    float _diference = 4;
 
     // Start is called before the first frame update
     void Awake()
@@ -17,12 +21,15 @@ public class Grup : MonoBehaviour
     void Start()
     {
         // Default position not valid? Then it's game over
-        if (!IsValidGridPos())
+        if (!IsValidGridPos(this.transform))
         {
             Debug.Log("GAME OVER");
             Destroy(gameObject);
             gameController.GameOver();
         }
+
+        boxSelectedObj = Instantiate(boxSelected);
+        UpdateSelectedPosition();
     }
 
     // Update is called once per frame
@@ -52,6 +59,8 @@ public class Grup : MonoBehaviour
         {
             FallHard();
         }
+
+        UpdateSelectedPosition();
     }
 
     void Move(Vector2 dir)
@@ -61,7 +70,7 @@ public class Grup : MonoBehaviour
         transform.position += new Vector3(norDir.x, norDir.y, 0);
 
         // See if it's valid
-        if (IsValidGridPos())
+        if (IsValidGridPos(this.transform))
             // It's valid. Update grid.
             UpdateGrid();
         else
@@ -74,13 +83,12 @@ public class Grup : MonoBehaviour
         transform.Rotate(0, 0, -90);
 
         // See if valid
-        if (IsValidGridPos())
+        if (IsValidGridPos(this.transform))
             // It's valid. Update grid.
             UpdateGrid();
         else
             // It's not valid. revert.
             transform.Rotate(0, 0, 90);
-
     }
 
     void MoveDown()
@@ -89,7 +97,7 @@ public class Grup : MonoBehaviour
         transform.position += new Vector3(0, -1, 0);
 
         // See if valid
-        if (IsValidGridPos())
+        if (IsValidGridPos(this.transform))
         {
             // It's valid. Update grid.
             UpdateGrid();
@@ -108,6 +116,7 @@ public class Grup : MonoBehaviour
             // Disable script
             enabled = false;
             GetComponent<TouchGestureGrup>().enabled = false;
+            Destroy(boxSelectedObj.gameObject);
         }
 
         lastFall = Time.time;
@@ -122,7 +131,7 @@ public class Grup : MonoBehaviour
             transform.position += new Vector3(0, -1, 0);
 
             // See if valid
-            if (IsValidGridPos())
+            if (IsValidGridPos(this.transform))
             {
                 // It's valid. Update grid.
                 UpdateGrid();
@@ -142,13 +151,14 @@ public class Grup : MonoBehaviour
                 enabled = false;
                 fall = false;
                 GetComponent<TouchGestureGrup>().enabled = false;
+                Destroy(boxSelectedObj.gameObject);
             }
         }
     }
 
-    bool IsValidGridPos()
+    bool IsValidGridPos(Transform transformObj)
     {
-        foreach (Transform child in transform)
+        foreach (Transform child in transformObj)
         {
             Vector2 v = GridGenerator.RoundVec2(child.position);
 
@@ -163,7 +173,9 @@ public class Grup : MonoBehaviour
                 Debug.Log((int)v.x + ", " + (int)v.y);
             }
 
-            if (GridGenerator.grid[(int)v.x, (int)v.y] != null && GridGenerator.grid[(int)v.x, (int)v.y].parent != transform) {
+            if (GridGenerator.grid[(int)v.x, (int)v.y] != null 
+                && GridGenerator.grid[(int)v.x, (int)v.y].parent != transform 
+                && GridGenerator.grid[(int)v.x, (int)v.y].parent != this.transform) {
                 return false;
             }
                 
@@ -187,5 +199,53 @@ public class Grup : MonoBehaviour
             Vector2 v = GridGenerator.RoundVec2(child.position);
             GridGenerator.grid[(int)v.x, (int)v.y] = child;
         }
+    }
+
+    void UpdateSelectedPosition()
+    {
+        _updateSelectedPosition();
+        boxSelectedObj.rotation = this.transform.rotation;
+    }
+
+    void _updateSelectedPosition()
+    {
+        boxSelectedObj.position = transform.position;
+        //boxSelectedObj.position += new Vector3(0, -4, 0);
+
+        bool fall = true;
+        while (fall)
+        {
+            // Modify position
+            boxSelectedObj.position += new Vector3(0, -1, 0);
+
+            // See if valid
+            if (IsValidGridPos(boxSelectedObj))
+            {
+                
+            }
+            else
+            {
+                // Disable script
+                fall = false;
+
+                // It's not valid. revert.
+                boxSelectedObj.position += new Vector3(0, 1, 0);
+
+                //_diference = transform.position.y - boxSelectedObj.position.y;
+
+                //if (_diference <= 4)
+                //{
+                //    Debug.Log("Liminte con: " + _diference);
+                //    _diference = 0;
+                //    boxSelectedObj.position = new Vector3(transform.position.x, boxSelectedObj.position.y + (4 - _diference), 0);
+                //    return;
+                //}
+            }
+        }
+
+        
+
+
+        boxSelectedObj.position = new Vector3(this.transform.position.x, boxSelectedObj.position.y, 0);
     }
 }

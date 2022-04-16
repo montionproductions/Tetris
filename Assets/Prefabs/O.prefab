@@ -213,6 +213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameController: {fileID: 0}
+  boxSelected: {fileID: 7539468150436092138, guid: 9cb22501970963248b9d53503a346f12, type: 3}
 --- !u!114 &1500222268323232391
 MonoBehaviour:
   m_ObjectHideFlags: 0
