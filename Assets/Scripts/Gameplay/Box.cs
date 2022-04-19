@@ -26,15 +26,33 @@ public class Box : MonoBehaviour
         }
     }
 
+    private IEnumerator ScaleAnimation(float scaleValue)
+    {
+        for (float scale = 1; scale < 1.2f; scale += scaleValue)
+        {
+            transform.localScale = new Vector3(scale, scale, scale);
+            yield return new WaitForSeconds(disolveVelocity);
+        }
+    }
+
     private IEnumerator UpdatePosition(float time)
     {
         yield return new WaitForSeconds(time);
         transform.position += new Vector3(0, -1, 0);
     }
 
-    public void DeleteBox(float timeToDestroy)
+    private IEnumerator StartAnimation(float timeToStart)
     {
+        yield return new WaitForSeconds(timeToStart);
+        GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         StartCoroutine("DisoveAnimation", 0.1f);
+        StartCoroutine("ScaleAnimation", 0.025f);
+
+    }
+
+    public void DeleteBox(float timeToStart, float timeToDestroy)
+    {
+        StartCoroutine("StartAnimation", timeToStart);
         Destroy(this.gameObject, timeToDestroy);
         Debug.Log("Box destroyed");
     }

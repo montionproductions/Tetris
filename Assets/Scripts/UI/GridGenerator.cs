@@ -95,7 +95,7 @@ public class GridGenerator : MonoBehaviour
         for (int elementRow = 0; elementRow < colums; ++elementRow)
         {
             //Destroy(grid[elementRow, row].gameObject);
-            grid[elementRow, row].gameObject.SendMessage("DeleteBox", 1);
+            grid[elementRow, row].GetComponent<Box>().DeleteBox((elementRow * 0.025f), 0.65f + (elementRow * 0.025f));
             grid[elementRow, row] = null;
         }
     }
