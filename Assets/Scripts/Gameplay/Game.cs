@@ -14,15 +14,31 @@ public class Game : MonoBehaviour
     public float spawnTime;
     public Transform spawnPoint;
 
-    public float movSpeed = 1f;
-    public float movTime = 2.0f;
+    public float MovSpeed = 1.0f;
+    public float MovTime = 1.0f;
 
     public static bool isPaused = false;
 
     public GameObject gameObjectMenu;
 
+    public List<Level> levels;
+
     private int[] _nextFigures;
     private Transform[] _nextFiguresObjects;
+
+    public class Level
+    {
+        public float _timeToStart;
+        public float _movTime;
+        public int _level;
+
+        public Level(float timeToStart, float movTime, int level)
+        {
+            _timeToStart = timeToStart;
+            _movTime = movTime;
+            _level = level;
+        }
+    }
 
 
     // Start is called before the first frame update
@@ -44,6 +60,8 @@ public class Game : MonoBehaviour
 
     void InitGame()
     {
+        _initLevels();
+
         isPaused = false;     
 
         _nextFigures = new int[3];
@@ -81,9 +99,10 @@ public class Game : MonoBehaviour
         Application.Quit();
     }
 
-    public void AddLevel()
+    public void OnLevelChange(float movTime, int level)
     {
-        // Implemen add level un UI
+        MovTime = movTime;
+        GameObject.FindObjectOfType<UIController>().UpdateLevel(level);
     }
 
     void _generateAllNextFigures()
@@ -119,5 +138,28 @@ public class Game : MonoBehaviour
         _getNextFigure();
 
         return obj;
+    }
+
+    private void _initLevels()
+    {
+        levels = new List<Level>();
+
+        levels.Add(new Level(0f, 1f, 1)); // Level 1
+        StartCoroutine("StartLevel", levels[0]);
+
+        levels.Add(new Level(60f, .5f, 2)); // Level 2
+        StartCoroutine("StartLevel", levels[1]);
+
+        levels.Add(new Level(180f, .25f, 3)); // Level 3
+        StartCoroutine("StartLevel", levels[2]);
+
+        levels.Add(new Level(300f, .10f, 4)); // Level 4
+        StartCoroutine("StartLevel", levels[3]);
+    }
+
+    IEnumerator StartLevel(Level level)
+    {
+        yield return new WaitForSeconds(level._timeToStart);
+        GameObject.FindObjectOfType<Game>().OnLevelChange(level._movTime, level._level);
     }
 }

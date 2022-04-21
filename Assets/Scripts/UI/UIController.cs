@@ -40,7 +40,7 @@ public class UIController : MonoBehaviour
         UpdateScore();
 
         _level = 1;
-        UpdateLevel();
+        UpdateLevel(_level);
 
         _lines = 0;
         UpdateLines();
@@ -51,8 +51,9 @@ public class UIController : MonoBehaviour
         ScoreText.text = _score.ToString();
     }
 
-    private void UpdateLevel()
+    public void UpdateLevel(int level)
     {
+        _level = level;
         LevelText.text = "Level:\n<size=130%>" + _level.ToString();
     }
 

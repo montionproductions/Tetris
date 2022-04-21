@@ -51,7 +51,7 @@ public class Grup : MonoBehaviour
         {
             Rotate();
         }// Move Downwards and Fall
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Time.time - lastFall >= 1)
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Time.time - lastFall >= gameController.MovTime)
         {
             MoveDown();
         } // Fall hard
