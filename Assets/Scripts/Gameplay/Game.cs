@@ -17,18 +17,13 @@ public class Game : MonoBehaviour
     public float movSpeed = 1f;
     public float movTime = 2.0f;
 
+    public static bool isPaused = false;
+
+    public GameObject gameObjectMenu;
+
     private int[] _nextFigures;
     private Transform[] _nextFiguresObjects;
 
-    public static bool isPaused = false;
-
-    public GameObject gameObjectMenu; 
-
-    public enum COLLISION_TYPE
-    {
-        LIMIT = 0,
-        DOWN = 1
-    };
 
     // Start is called before the first frame update
     void Start()
@@ -84,6 +79,11 @@ public class Game : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    public void AddLevel()
+    {
+        // Implemen add level un UI
     }
 
     void _generateAllNextFigures()

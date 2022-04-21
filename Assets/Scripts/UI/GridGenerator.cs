@@ -140,6 +140,7 @@ public class GridGenerator : MonoBehaviour
             {
                 DeleteRow(y);
                 DecreaseRowsAbove(y + 1);
+                GameObject.FindObjectOfType<UIController>().AddLine(1);
                 --y;
             }
         }

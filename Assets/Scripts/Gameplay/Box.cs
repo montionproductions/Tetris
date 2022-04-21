@@ -45,6 +45,7 @@ public class Box : MonoBehaviour
     {
         yield return new WaitForSeconds(timeToStart);
         GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        GetComponent<SpriteRenderer>().sortingOrder = 3;
         StartCoroutine("DisoveAnimation", 0.1f);
         StartCoroutine("ScaleAnimation", 0.025f);
 
