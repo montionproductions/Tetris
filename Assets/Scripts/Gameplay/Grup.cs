@@ -9,8 +9,8 @@ public class Grup : MonoBehaviour
 
     private Transform boxSelectedObj;
 
-    float lastFall = 0;
-    float _diference = 4;
+    float lastFall = 0f;
+    float _pressTime = 0f;
 
     // Start is called before the first frame update
     void Awake()
@@ -38,20 +38,22 @@ public class Grup : MonoBehaviour
         if (Game.isPaused)
             return;
 
+
         // Move Left
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             Move(Vector2.left);
         }// Move Right
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.RightArrow))
         {
             Move(Vector2.right);
+              
         }// Rotate
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             Rotate();
         }// Move Downwards and Fall
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Time.time - lastFall >= gameController.MovTime)
+        else if (Input.GetKey(KeyCode.DownArrow) || Time.time - lastFall >= gameController.MovTime)
         {
             MoveDown();
         } // Fall hard
@@ -65,61 +67,75 @@ public class Grup : MonoBehaviour
 
     void Move(Vector2 dir)
     {
-        Vector2 norDir = dir;
-        // Modify position
-        transform.position += new Vector3(norDir.x, norDir.y, 0);
+        if (Time.time - _pressTime >= gameController.MovSpeed)
+        {
+            Vector2 norDir = dir;
+            // Modify position
+            transform.position += new Vector3(norDir.x, norDir.y, 0);
 
-        // See if it's valid
-        if (IsValidGridPos(this.transform))
-            // It's valid. Update grid.
-            UpdateGrid();
-        else
-            // Its not valid. revert.
-            transform.position += new Vector3(-norDir.x, -norDir.y, 0);
+            // See if it's valid
+            if (IsValidGridPos(this.transform))
+                // It's valid. Update grid.
+                UpdateGrid();
+            else
+                // Its not valid. revert.
+                transform.position += new Vector3(-norDir.x, -norDir.y, 0);
+
+            _pressTime = Time.time;
+        }
     }
 
     void Rotate()
     {
-        transform.Rotate(0, 0, -90);
+        if (Time.time - _pressTime >= gameController.MovSpeed)
+        {
+            transform.Rotate(0, 0, -90);
 
-        // See if valid
-        if (IsValidGridPos(this.transform))
-            // It's valid. Update grid.
-            UpdateGrid();
-        else
-            // It's not valid. revert.
-            transform.Rotate(0, 0, 90);
+            // See if valid
+            if (IsValidGridPos(this.transform))
+                // It's valid. Update grid.
+                UpdateGrid();
+            else
+                // It's not valid. revert.
+                transform.Rotate(0, 0, 90);
+
+            _pressTime = Time.time;
+        }
     }
 
     void MoveDown()
     {
-        // Modify position
-        transform.position += new Vector3(0, -1, 0);
-
-        // See if valid
-        if (IsValidGridPos(this.transform))
+        if (Time.time - _pressTime >= gameController.MovSpeed)
         {
-            // It's valid. Update grid.
-            UpdateGrid();
+            // Modify position
+            transform.position += new Vector3(0, -1, 0);
+
+            // See if valid
+            if (IsValidGridPos(this.transform))
+            {
+                // It's valid. Update grid.
+                UpdateGrid();
+            }
+            else
+            {
+                // It's not valid. revert.
+                transform.position += new Vector3(0, 1, 0);
+
+                // Clear filled horizontal lines
+                GridGenerator.DeleteFullRows();
+
+                // Spawn next Group
+                gameController.SpawnRandomFigure();
+
+                // Disable script
+                enabled = false;
+                GetComponent<TouchGestureGrup>().enabled = false;
+                Destroy(boxSelectedObj.gameObject);
+            }
+
+            lastFall = Time.time;
+            _pressTime = Time.time;
         }
-        else
-        {
-            // It's not valid. revert.
-            transform.position += new Vector3(0, 1, 0);
-
-            // Clear filled horizontal lines
-            GridGenerator.DeleteFullRows();
-
-            // Spawn next Group
-            gameController.SpawnRandomFigure();
-
-            // Disable script
-            enabled = false;
-            GetComponent<TouchGestureGrup>().enabled = false;
-            Destroy(boxSelectedObj.gameObject);
-        }
-
-        lastFall = Time.time;
     }
 
     void FallHard()
@@ -154,6 +170,8 @@ public class Grup : MonoBehaviour
                 Destroy(boxSelectedObj.gameObject);
             }
         }
+
+        _pressTime = Time.time;
     }
 
     bool IsValidGridPos(Transform transformObj)

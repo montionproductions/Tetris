@@ -8,6 +8,7 @@ public class UIController : MonoBehaviour
     public TMP_Text ScoreText;
     public TMP_Text LevelText;
     public TMP_Text LinesText;
+    public GameObject StartCounter;
 
     public int scoreMultiplier = 110;
 
@@ -21,6 +22,11 @@ public class UIController : MonoBehaviour
         ScoreText = GameObject.Find("ScoreText").GetComponent<TMP_Text>();
         LevelText = GameObject.Find("LevelText").GetComponent<TMP_Text>();
         LinesText = GameObject.Find("LinesText").GetComponent<TMP_Text>();
+
+        // Find start timer
+        var Timer = GameObject.Find("Timer");
+        if (Timer != null)
+            StartCounter = Timer;
     }
 
     private void Start()
@@ -44,6 +50,8 @@ public class UIController : MonoBehaviour
 
         _lines = 0;
         UpdateLines();
+
+        StartCounter.SetActive(true);
     }
 
     private void UpdateScore()

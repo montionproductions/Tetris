@@ -8,7 +8,19 @@ public class TouchGestureGrup : MonoBehaviour
     private Vector2 fingerUp;
     public bool detectSwipeOnlyAfterRelease = false;
 
-    public float SWIPE_THRESHOLD = 20f;
+    public float HORIZONTAL_SWIPE_THRESHOLD = 20f;
+    public float VERTICAL_SWIPE_THRESHOLD = 10f;
+
+    Game gameController;
+
+    private float _timePressed = 0;
+    private bool _isPressed = false;
+    private bool _isMoving = false;
+
+    void Awake()
+    {
+        gameController = GameObject.FindObjectOfType<Game>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -20,11 +32,15 @@ public class TouchGestureGrup : MonoBehaviour
             {
                 fingerUp = touch.position;
                 fingerDown = touch.position;
+
+                _isPressed = true;
             }
 
             //Detects Swipe while finger is still moving
             if (touch.phase == TouchPhase.Moved)
             {
+                _isMoving = true;
+
                 if (!detectSwipeOnlyAfterRelease)
                 {
                     fingerDown = touch.position;
@@ -35,16 +51,40 @@ public class TouchGestureGrup : MonoBehaviour
             //Detects swipe after finger is released
             if (touch.phase == TouchPhase.Ended)
             {
+                _isPressed = false;
+                _isMoving = false;
+
                 fingerDown = touch.position;
-                checkSwipe();
+                checkSwipeReleased();
+                _timePressed = 0f;
             }
+        }
+
+        if(_isPressed)
+        {
+            _timePressed += Time.deltaTime;
+            Debug.Log(_timePressed);
+        }
+    }
+
+    void checkSwipeReleased()
+    {
+        //Check if Vertical swipe
+        if (verticalMove() > VERTICAL_SWIPE_THRESHOLD && verticalMove() > horizontalValMove())
+        {
+            //Debug.Log("Vertical");
+            if (fingerDown.y - fingerUp.y < 0)//Down swipe
+            {
+                OnSwipeDownReleased();
+            }
+            fingerUp = fingerDown;
         }
     }
 
     void checkSwipe()
     {
         //Check if Vertical swipe
-        if (verticalMove() > SWIPE_THRESHOLD && verticalMove() > horizontalValMove())
+        if (verticalMove() > VERTICAL_SWIPE_THRESHOLD && verticalMove() > horizontalValMove())
         {
             //Debug.Log("Vertical");
             if (fingerDown.y - fingerUp.y > 0)//up swipe
@@ -59,7 +99,7 @@ public class TouchGestureGrup : MonoBehaviour
         }
 
         //Check if Horizontal swipe
-        else if (horizontalValMove() > SWIPE_THRESHOLD && horizontalValMove() > verticalMove())
+        else if (horizontalValMove() > HORIZONTAL_SWIPE_THRESHOLD && horizontalValMove() > verticalMove())
         {
             //Debug.Log("Horizontal");
             if (fingerDown.x - fingerUp.x > 0)//Right swipe
@@ -93,19 +133,21 @@ public class TouchGestureGrup : MonoBehaviour
     //////////////////////////////////CALLBACK FUNCTIONS/////////////////////////////
     void OnSwipeUp()
     {
-        //Debug.Log("Swipe UP");
         gameObject.SendMessage("Rotate");
     }
 
     void OnSwipeDown()
     {
-        //Debug.Log("Swipe Down");
+        gameObject.SendMessage("MoveDown");
+    }
+
+    void OnSwipeDownReleased()
+    {
         gameObject.SendMessage("FallHard");
     }
 
     void OnSwipeLeft()
     {
-        //Debug.Log("Swipe Left");
         gameObject.SendMessage("Move", Vector2.left);
     }
 

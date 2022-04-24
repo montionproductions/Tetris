@@ -44,7 +44,7 @@ public class Game : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InitGame();
+        
     }
 
     // Update is called once per frame
@@ -58,7 +58,7 @@ public class Game : MonoBehaviour
 
     }
 
-    void InitGame()
+    public void InitGame()
     {
         _initLevels();
 
