@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
@@ -14,10 +13,15 @@ public class Game : MonoBehaviour
     public float spawnTime;
     public Transform spawnPoint;
 
-    public float MovSpeed = 1.0f;
-    public float MovTime = 1.0f;
+    public static float HorizontalMovSpeed = 0.1f;
+    public static float VerticalMovSpeed = 0.05f;
+    public static float RotateSpeed = 0.2f;
+    public static float MovTime = 1.0f;
 
     public static bool isPaused = false;
+    public static float TimeTimer = 0f;
+    public static bool isGameStarted = false;
+    public static bool isGameOver = false;
 
     public GameObject gameObjectMenu;
 
@@ -55,14 +59,23 @@ public class Game : MonoBehaviour
 
     void Update()
     {
+        if (isPaused || isGameOver)
+            return;
 
+        if(isGameStarted)
+        {
+            UpdateTimer();
+        }
     }
 
     public void InitGame()
     {
         _initLevels();
 
-        isPaused = false;     
+        TimeTimer = 0f;
+        isPaused = false;
+        isGameStarted = true;
+        isGameOver = false;
 
         _nextFigures = new int[3];
         _nextFiguresObjects = new Transform[3];
@@ -92,6 +105,7 @@ public class Game : MonoBehaviour
     public void GameOver()
     {
         gameObjectMenu.SetActive(true);
+        isGameOver = true;
     }
 
     public void ExitGame()
@@ -161,5 +175,11 @@ public class Game : MonoBehaviour
     {
         yield return new WaitForSeconds(level._timeToStart);
         GameObject.FindObjectOfType<Game>().OnLevelChange(level._movTime, level._level);
+    }
+
+    void UpdateTimer()
+    {
+        TimeTimer += Time.deltaTime;
+        // Implements UI Controller
     }
 }

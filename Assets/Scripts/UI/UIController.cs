@@ -9,6 +9,7 @@ public class UIController : MonoBehaviour
     public TMP_Text LevelText;
     public TMP_Text LinesText;
     public GameObject StartCounter;
+    public TMP_Text TimeText;
 
     public int scoreMultiplier = 110;
 
@@ -16,9 +17,13 @@ public class UIController : MonoBehaviour
     private int _level = 1;
     private int _lines = 0;
 
+    private Game gameController;
+
     // Start is called before the first frame update
     void Awake()
     {
+        gameController = GameObject.FindObjectOfType<Game>();
+
         ScoreText = GameObject.Find("ScoreText").GetComponent<TMP_Text>();
         LevelText = GameObject.Find("LevelText").GetComponent<TMP_Text>();
         LinesText = GameObject.Find("LinesText").GetComponent<TMP_Text>();
@@ -27,6 +32,8 @@ public class UIController : MonoBehaviour
         var Timer = GameObject.Find("Timer");
         if (Timer != null)
             StartCounter = Timer;
+
+        TimeText = GameObject.Find("TimeText").GetComponent<TMP_Text>();
     }
 
     private void Start()
@@ -37,7 +44,10 @@ public class UIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Game.isPaused)
+            return;
+
+        UpdateTime();
     }
 
     public void ResetText()
@@ -79,5 +89,14 @@ public class UIController : MonoBehaviour
         UpdateLines();
         UpdateScore();
         //UpdateLevel();
+    }
+
+    private void UpdateTime()
+    {
+        var minutes = (int)Game.TimeTimer / 60;
+        var seconds = (int)Game.TimeTimer % 60;
+        var timeConverted = minutes.ToString("0") + "." + seconds.ToString();
+
+        TimeText.text = "Time:\n<size=130%>" + timeConverted;
     }
 }

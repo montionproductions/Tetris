@@ -63,7 +63,7 @@ public class TouchGestureGrup : MonoBehaviour
         if(_isPressed)
         {
             _timePressed += Time.deltaTime;
-            Debug.Log(_timePressed);
+            //Debug.Log(_timePressed);
         }
     }
 

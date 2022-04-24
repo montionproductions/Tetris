@@ -2825,7 +2825,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1682348136}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -4559,8 +4559,6 @@ MonoBehaviour:
   - {fileID: 245143365}
   spawnTime: 3
   spawnPoint: {fileID: 436770725}
-  MovSpeed: 0.08
-  MovTime: 1
   gameObjectMenu: {fileID: 1731706473}
 --- !u!20 &519420031
 Camera:
@@ -7793,7 +7791,7 @@ RectTransform:
   - {fileID: 284089020}
   - {fileID: 881466903}
   m_Father: {fileID: 1682348136}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -13120,7 +13118,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1682348136}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -15377,7 +15375,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1682348136}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -16823,7 +16821,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1682348136}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -18372,12 +18370,12 @@ RectTransform:
   - {fileID: 572698366}
   - {fileID: 759385005}
   - {fileID: 265414906}
-  - {fileID: 1731706474}
   - {fileID: 1207914902}
   - {fileID: 1370365988}
   - {fileID: 1514792534}
   - {fileID: 311429869}
   - {fileID: 712115732}
+  - {fileID: 1731706474}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -18402,6 +18400,7 @@ MonoBehaviour:
   LevelText: {fileID: 1514792535}
   LinesText: {fileID: 1370365989}
   StartCounter: {fileID: 712115731}
+  TimeText: {fileID: 0}
   scoreMultiplier: 110
 --- !u!1 &1697017083
 GameObject:
@@ -18683,7 +18682,7 @@ RectTransform:
   - {fileID: 1322323114}
   - {fileID: 1046806246}
   m_Father: {fileID: 1682348136}
-  m_RootOrder: 3
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

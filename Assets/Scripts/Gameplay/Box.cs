@@ -55,7 +55,7 @@ public class Box : MonoBehaviour
     {
         StartCoroutine("StartAnimation", timeToStart);
         Destroy(this.gameObject, timeToDestroy);
-        Debug.Log("Box destroyed");
+        //Debug.Log("Box destroyed");
     }
 
     public void MoveDown()
