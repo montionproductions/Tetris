@@ -13,11 +13,13 @@ public class DragAndDropElement : MonoBehaviour
     void OnMouseEnter()
     {
         GetComponent<Renderer>().material.color = mouseOverColor;
+        GameObject.FindObjectOfType<TouchGestureGrup>().enabled = false;
     }
 
     void OnMouseExit()
     {
         GetComponent<Renderer>().material.color = originalColor;
+        GameObject.FindObjectOfType<TouchGestureGrup>().enabled = true;
     }
 
     void OnMouseDown()
@@ -53,5 +55,10 @@ public class DragAndDropElement : MonoBehaviour
             Vector3 rayPoint = ray.GetPoint(distance);
             transform.position = rayPoint;
         }
+    }
+
+    private void OnDestroy()
+    {
+        GameObject.FindObjectOfType<TouchGestureGrup>().enabled = true;
     }
 }

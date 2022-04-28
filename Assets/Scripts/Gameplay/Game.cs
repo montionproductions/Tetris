@@ -13,10 +13,10 @@ public class Game : MonoBehaviour
     public float spawnTime;
     public Transform spawnPoint;
 
-    public static float HorizontalMovSpeed = 0.1f;
-    public static float VerticalMovSpeed = 0.05f;
-    public static float RotateSpeed = 0.2f;
-    public static float MovTime = 1.0f;
+    public float HorizontalMovSpeed = 0.1f;
+    public float VerticalMovSpeed = 0.05f;
+    public float RotateSpeed = 0.2f;
+    public float MovTime = 1.0f;
 
     public static bool isPaused = false;
     public static float TimeTimer = 0f;

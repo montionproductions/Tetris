@@ -4559,6 +4559,10 @@ MonoBehaviour:
   - {fileID: 245143365}
   spawnTime: 3
   spawnPoint: {fileID: 436770725}
+  HorizontalMovSpeed: 0.09
+  VerticalMovSpeed: 0.05
+  RotateSpeed: 0.25
+  MovTime: 1
   gameObjectMenu: {fileID: 1731706473}
 --- !u!20 &519420031
 Camera:

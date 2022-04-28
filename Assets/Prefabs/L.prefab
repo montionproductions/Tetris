@@ -257,8 +257,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectSwipeOnlyAfterRelease: 0
-  HORIZONTAL_SWIPE_THRESHOLD: 10
-  VERTICAL_SWIPE_THRESHOLD: 10
+  HORIZONTAL_SWIPE_THRESHOLD: 15
+  VERTICAL_SWIPE_THRESHOLD: 15
 --- !u!1 &7437344061526746766
 GameObject:
   m_ObjectHideFlags: 0

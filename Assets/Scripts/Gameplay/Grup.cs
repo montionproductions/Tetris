@@ -41,23 +41,23 @@ public class Grup : MonoBehaviour
         _pressTime += Time.deltaTime;
 
         // Move Left
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKey(KeyCode.LeftArrow) && _pressTime > Game.HorizontalMovSpeed)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKey(KeyCode.LeftArrow) && _pressTime > gameController.HorizontalMovSpeed)
         {
             Move(Vector2.left);
             _pressTime = 0f;
         }// Move Right
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKey(KeyCode.RightArrow) && _pressTime > Game.HorizontalMovSpeed)
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKey(KeyCode.RightArrow) && _pressTime > gameController.HorizontalMovSpeed)
         {
             Move(Vector2.right);
             _pressTime = 0f;
         }// Rotate
-        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey(KeyCode.UpArrow) && _pressTime > Game.RotateSpeed)
+        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey(KeyCode.UpArrow) && _pressTime > gameController.RotateSpeed)
         {
             Rotate();
             _pressTime = 0f;
         }// Move Downwards and Fall
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Time.time - lastFall >= Game.MovTime ||
-           Input.GetKey(KeyCode.DownArrow) && _pressTime > Game.VerticalMovSpeed)
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Time.time - lastFall >= gameController.MovTime ||
+           Input.GetKey(KeyCode.DownArrow) && _pressTime > gameController.VerticalMovSpeed)
         {
             MoveDown();
             _pressTime = 0f;

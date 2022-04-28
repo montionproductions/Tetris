@@ -13,7 +13,7 @@ public class TouchGestureGrup : MonoBehaviour
 
     Game gameController;
 
-    private float _timePressed = 0;
+    private float _pressTime = 0;
     private bool _isPressed = false;
     private bool _isMoving = false;
 
@@ -25,6 +25,10 @@ public class TouchGestureGrup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Game.isPaused)
+            return;
+
+        _pressTime += Time.deltaTime;
 
         foreach (Touch touch in Input.touches)
         {
@@ -34,6 +38,7 @@ public class TouchGestureGrup : MonoBehaviour
                 fingerDown = touch.position;
 
                 _isPressed = true;
+                _pressTime = 0;
             }
 
             //Detects Swipe while finger is still moving
@@ -56,15 +61,9 @@ public class TouchGestureGrup : MonoBehaviour
 
                 fingerDown = touch.position;
                 checkSwipeReleased();
-                _timePressed = 0f;
             }
         }
 
-        if(_isPressed)
-        {
-            _timePressed += Time.deltaTime;
-            //Debug.Log(_timePressed);
-        }
     }
 
     void checkSwipeReleased()
@@ -73,27 +72,15 @@ public class TouchGestureGrup : MonoBehaviour
         if (verticalMove() > VERTICAL_SWIPE_THRESHOLD && verticalMove() > horizontalValMove())
         {
             //Debug.Log("Vertical");
-            if (fingerDown.y - fingerUp.y < 0)//Down swipe
+            if (fingerDown.y - fingerUp.y < 0 && _pressTime < .6f)//Down swipe
             {
+                Debug.Log(_pressTime);
                 OnSwipeDownReleased();
+                _pressTime = 0;
             }
-            fingerUp = fingerDown;
-        }
-    }
-
-    void checkSwipe()
-    {
-        //Check if Vertical swipe
-        if (verticalMove() > VERTICAL_SWIPE_THRESHOLD && verticalMove() > horizontalValMove())
-        {
-            //Debug.Log("Vertical");
-            if (fingerDown.y - fingerUp.y > 0)//up swipe
+            else if (fingerDown.y - fingerUp.y > 0)//Up swipe
             {
                 OnSwipeUp();
-            }
-            else if (fingerDown.y - fingerUp.y < 0)//Down swipe
-            {
-                OnSwipeDown();
             }
             fingerUp = fingerDown;
         }
@@ -111,6 +98,39 @@ public class TouchGestureGrup : MonoBehaviour
                 OnSwipeLeft();
             }
             fingerUp = fingerDown;
+        }
+    }
+
+    void checkSwipe()
+    {
+        //Check if Vertical swipe
+        if (verticalMove() > VERTICAL_SWIPE_THRESHOLD && verticalMove() > horizontalValMove())
+        {
+            //Debug.Log("Vertical");
+            if (fingerDown.y - fingerUp.y > 0 && _pressTime > gameController.RotateSpeed)//up swipe
+            {
+                OnSwipeUp();
+            }
+            else if (fingerDown.y - fingerUp.y < 0 && _pressTime > gameController.VerticalMovSpeed)//Down swipe
+            {
+                OnSwipeDown();
+            }
+            //fingerUp = fingerDown;
+        }
+
+        //Check if Horizontal swipe
+        else if (horizontalValMove() > HORIZONTAL_SWIPE_THRESHOLD && horizontalValMove() > verticalMove())
+        {
+            //Debug.Log("Horizontal");
+            if (fingerDown.x - fingerUp.x > 0 && _pressTime > gameController.HorizontalMovSpeed)//Right swipe
+            {
+                OnSwipeRight();
+            }
+            else if (fingerDown.x - fingerUp.x < 0 && _pressTime > gameController.HorizontalMovSpeed)//Left swipe
+            {
+                OnSwipeLeft();
+            }
+            //fingerUp = fingerDown;
         }
 
         //No Movement at-all
@@ -134,11 +154,13 @@ public class TouchGestureGrup : MonoBehaviour
     void OnSwipeUp()
     {
         gameObject.SendMessage("Rotate");
+        _pressTime = 0;
     }
 
     void OnSwipeDown()
     {
         gameObject.SendMessage("MoveDown");
+        _pressTime = 0;
     }
 
     void OnSwipeDownReleased()
@@ -149,11 +171,13 @@ public class TouchGestureGrup : MonoBehaviour
     void OnSwipeLeft()
     {
         gameObject.SendMessage("Move", Vector2.left);
+        _pressTime = 0;
     }
 
     void OnSwipeRight()
     {
         //Debug.Log("Swipe Right");
         gameObject.SendMessage("Move", Vector2.right);
+        _pressTime = 0;
     }
 }
