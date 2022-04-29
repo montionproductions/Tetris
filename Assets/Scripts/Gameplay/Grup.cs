@@ -6,6 +6,7 @@ public class Grup : MonoBehaviour
 {
     public Game gameController;
     public Transform boxSelected;
+    public Transform trail;
 
     private Transform boxSelectedObj;
 
@@ -30,6 +31,9 @@ public class Grup : MonoBehaviour
 
         boxSelectedObj = Instantiate(boxSelected);
         UpdateSelectedPosition();
+
+        // Show trail
+        InstantiateHardFallTrails();
     }
 
     // Update is called once per frame
@@ -72,6 +76,7 @@ public class Grup : MonoBehaviour
 
     void Move(Vector2 dir)
     {
+        ShowHardFallTrails(false);
         Vector2 norDir = dir;
         // Modify position
         transform.position += new Vector3(norDir.x, norDir.y, 0);
@@ -83,10 +88,13 @@ public class Grup : MonoBehaviour
         else
             // Its not valid. revert.
             transform.position += new Vector3(-norDir.x, -norDir.y, 0);
+
+        ShowHardFallTrails(true);
     }
 
     void Rotate()
     {
+        ShowHardFallTrails(false);
         transform.Rotate(0, 0, -90);
 
         // See if valid
@@ -96,10 +104,12 @@ public class Grup : MonoBehaviour
         else
             // It's not valid. revert.
             transform.Rotate(0, 0, 90);
+        ShowHardFallTrails(true);
     }
 
     void MoveDown()
     {
+        ShowHardFallTrails(false);
         // Modify position
         transform.position += new Vector3(0, -1, 0);
 
@@ -127,6 +137,7 @@ public class Grup : MonoBehaviour
         }
 
         lastFall = Time.time;
+        ShowHardFallTrails(true);
     }
 
     void FallHard()
@@ -153,6 +164,8 @@ public class Grup : MonoBehaviour
 
                 // Spawn next Group
                 gameController.SpawnRandomFigure();
+
+                DestroyHardFallTrails();
 
                 // Disable script
                 enabled = false;
@@ -243,5 +256,35 @@ public class Grup : MonoBehaviour
 
 
         boxSelectedObj.position = new Vector3(this.transform.position.x, boxSelectedObj.position.y, 0);
+    }
+
+    void InstantiateHardFallTrails()
+    {
+        foreach (Transform child in transform)
+        {
+            var instanceTrail = Instantiate(trail, child);
+
+            var colorChild = child.GetComponent<SpriteRenderer>().color;
+            instanceTrail.GetComponent<TrailRenderer>().startColor = colorChild;
+            instanceTrail.GetComponent<TrailRenderer>().endColor = new Color(colorChild.r, colorChild.g, colorChild.b, 0);
+
+            instanceTrail.gameObject.SetActive(true);
+        }
+    }
+
+    void DestroyHardFallTrails()
+    {
+        foreach (Transform child in transform)
+        {
+            child.GetChild(0).GetComponent<BoxTrail>().DestroyTrail();
+        }
+    }
+
+    void ShowHardFallTrails(bool active)
+    {
+        foreach (Transform child in transform)
+        {
+            child.GetChild(0).gameObject.SetActive(active);
+        }
     }
 }

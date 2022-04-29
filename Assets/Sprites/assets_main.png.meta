@@ -244,13 +244,13 @@ TextureImporter:
       name: button_inactive
       rect:
         serializedVersion: 2
-        x: 502
-        y: 1235
-        width: 226
-        height: 115
+        x: 501
+        y: 1236
+        width: 227
+        height: 124
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 25, y: 25, z: 25, w: 25}
+      border: {x: 21, y: 33, z: 21, w: 21}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -265,10 +265,10 @@ TextureImporter:
       name: button_active
       rect:
         serializedVersion: 2
-        x: 741
-        y: 1233
-        width: 228
-        height: 115
+        x: 761
+        y: 1244
+        width: 227
+        height: 114
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 25, y: 25, z: 25, w: 25}
