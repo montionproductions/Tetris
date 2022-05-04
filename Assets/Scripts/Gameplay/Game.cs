@@ -164,11 +164,17 @@ public class Game : MonoBehaviour
         levels.Add(new Level(60f, .5f, 2)); // Level 2
         StartCoroutine("StartLevel", levels[1]);
 
-        levels.Add(new Level(180f, .25f, 3)); // Level 3
+        levels.Add(new Level(180f, .4f, 3)); // Level 3
         StartCoroutine("StartLevel", levels[2]);
 
-        levels.Add(new Level(300f, .10f, 4)); // Level 4
+        levels.Add(new Level(360f, .35f, 4)); // Level 4
         StartCoroutine("StartLevel", levels[3]);
+
+        levels.Add(new Level(540f, .25f, 5)); // Level 5
+        StartCoroutine("StartLevel", levels[4]);
+
+        levels.Add(new Level(720f, .15f, 6)); // Level 5
+        StartCoroutine("StartLevel", levels[5]);
     }
 
     IEnumerator StartLevel(Level level)

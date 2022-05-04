@@ -72,7 +72,7 @@ public class TouchGestureGrup : MonoBehaviour
         if (verticalMove() > VERTICAL_SWIPE_THRESHOLD && verticalMove() > horizontalValMove())
         {
             //Debug.Log("Vertical");
-            if (fingerDown.y - fingerUp.y < 0 && _pressTime < .6f)//Down swipe
+            if (fingerDown.y - fingerUp.y < 0 && _pressTime < .25f)//Down swipe
             {
                 Debug.Log(_pressTime);
                 OnSwipeDownReleased();

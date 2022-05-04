@@ -22,13 +22,29 @@ public class PowerUps : MonoBehaviour
         
     }
 
-    public static Vector2 CompleteRow(Transform box)
+    private static Vector2 PutBox(Transform box)
     {
         // Add new children to grid
         Vector2 v = GridGenerator.RoundVec2(box.position);
         GridGenerator.grid[(int)v.x, (int)v.y] = box;
 
         return v;
+    }
+
+    public static void DeleteRow(Transform box)
+    {
+        // Add box to grid
+        Vector2 v = PutBox(box);
+        box.position = new Vector3(v.x, v.y, 0);
+
+        // Clear filled horizontal lines
+        GridGenerator.DeleteFullRows();
+    }
+
+    public static void DeleteColum(Transform box)
+    {
+        Vector2 v = GridGenerator.RoundVec2(box.position);
+        GridGenerator.DeleteColum((int)v.x);
     }
 
     public static bool IsValidGridPos(Transform box)
@@ -47,6 +63,19 @@ public class PowerUps : MonoBehaviour
             return false;
         }
 
+        return true;
+    }
+
+    public static bool IsValidColum(Transform box)
+    {
+        Vector2 v = GridGenerator.RoundVec2(box.position);
+
+        if (!GridGenerator.InsideBorder(v))
+            return false;
+
+        if (box.position.y > 19 || box.position.y < 0)
+            return false;
+    
         return true;
     }
 }

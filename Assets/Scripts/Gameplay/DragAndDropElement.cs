@@ -10,16 +10,29 @@ public class DragAndDropElement : MonoBehaviour
     private float distance;
     private Vector3 startPost;
 
+    public PowerUpType powerUpType;
+
+    public enum PowerUpType
+    {
+        CompleteRow = 0,
+        DeleteColum = 1,
+        DeleteColor = 3
+    }
+
     void OnMouseEnter()
     {
         GetComponent<Renderer>().material.color = mouseOverColor;
-        GameObject.FindObjectOfType<TouchGestureGrup>().enabled = false;
+
+        if(GameObject.FindObjectOfType<TouchGestureGrup>() != null)
+            GameObject.FindObjectOfType<TouchGestureGrup>().enabled = false;
     }
 
     void OnMouseExit()
     {
         GetComponent<Renderer>().material.color = originalColor;
-        GameObject.FindObjectOfType<TouchGestureGrup>().enabled = true;
+
+        if (GameObject.FindObjectOfType<TouchGestureGrup>() != null)
+            GameObject.FindObjectOfType<TouchGestureGrup>().enabled = true;
     }
 
     void OnMouseDown()
@@ -27,24 +40,58 @@ public class DragAndDropElement : MonoBehaviour
         distance = Vector3.Distance(transform.position, Camera.main.transform.position);
         dragging = true;
         startPost = transform.position;
+        Time.timeScale = .3f;
     }
 
     void OnMouseUp()
     {
         dragging = false;
-        if(PowerUps.IsValidGridPos(transform)) {
-            Vector2 v = PowerUps.CompleteRow(transform);
-            transform.position = new Vector3(v.x, v.y, 0);
+        Time.timeScale = 1.0f;
 
-            // Clear filled horizontal lines
-            GridGenerator.DeleteFullRows();
+        switch(powerUpType)
+        {
+            case PowerUpType.CompleteRow:
+                PowerUp_CompleteRow();
+                break;
+            case PowerUpType.DeleteColum:
+                PowerUp_DeleteColum();
+                break;
+            case PowerUpType.DeleteColor:
+                PowerUp_DeleteColor();
+                break;
+        }  
+    }
 
+    private void PowerUp_CompleteRow()
+    {
+        if (PowerUps.IsValidGridPos(transform))
+        {
+            PowerUps.DeleteRow(transform);
             enabled = false;
-
-        } else
+        }
+        else
         {
             transform.position = startPost;
         }
+    }
+
+    private void PowerUp_DeleteColum()
+    {
+        // Implements
+        if (PowerUps.IsValidColum(transform))
+        {
+            PowerUps.DeleteColum(transform);
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            transform.position = startPost;
+        }
+    }
+
+    private void PowerUp_DeleteColor()
+    {
+        // Implements
     }
 
     void Update()

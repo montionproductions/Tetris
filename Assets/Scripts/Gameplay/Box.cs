@@ -60,6 +60,6 @@ public class Box : MonoBehaviour
 
     public void MoveDown()
     {
-        StartCoroutine("UpdatePosition", 1.0f);
+        StartCoroutine("UpdatePosition", 0.35f);
     }
 }
