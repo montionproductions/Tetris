@@ -7,6 +7,7 @@ public class Grup : MonoBehaviour
     public Game gameController;
     public Transform boxSelected;
     public Transform trail;
+    public bool isNoRatable = false;
 
     private Transform boxSelectedObj;
 
@@ -26,7 +27,7 @@ public class Grup : MonoBehaviour
         {
             Debug.Log("GAME OVER");
             Destroy(gameObject);
-            gameController.GameOver();
+            gameController.StartCoroutine("GameOver");
         }
 
         boxSelectedObj = Instantiate(boxSelected);
@@ -39,7 +40,7 @@ public class Grup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Game.isPaused)
+        if (Game.isPaused || Game.isGameOver)
             return;
 
         _pressTime += Time.deltaTime;
@@ -94,17 +95,64 @@ public class Grup : MonoBehaviour
 
     void Rotate()
     {
+        if (isNoRatable)
+            return;
+
         ShowHardFallTrails(false);
         transform.Rotate(0, 0, -90);
 
         // See if valid
         if (IsValidGridPos(this.transform))
+        {
             // It's valid. Update grid.
             UpdateGrid();
+        }
         else
-            // It's not valid. revert.
-            transform.Rotate(0, 0, 90);
+        {
+            if(CheckValidRotate(transform.position))
+            {
+                // It's valid. Update grid.
+                UpdateGrid();
+            } else
+            {
+                // Revert rotation
+                transform.Rotate(0, 0, 90);
+            }
+        }
+
         ShowHardFallTrails(true);
+    }
+
+    bool CheckValidRotate(Vector2 boxPosition)
+    {
+        // Check if is valid move left and rotate
+        this.transform.position = new Vector2(boxPosition.x + 1, boxPosition.y);
+        if (IsValidGridPos(this.transform))
+        {
+            return true;
+        }
+
+        this.transform.position = new Vector2(boxPosition.x + 2, boxPosition.y);
+        if (IsValidGridPos(this.transform))
+        {
+            return true;
+        }
+
+        this.transform.position = new Vector2(boxPosition.x - 1, boxPosition.y);
+        if (IsValidGridPos(this.transform))
+        {
+            return true;
+        }
+
+        this.transform.position = new Vector2(boxPosition.x - 2, boxPosition.y);
+        if (IsValidGridPos(this.transform))
+        {
+            return true;
+        }
+
+        this.transform.position = new Vector2(boxPosition.x, boxPosition.y);
+        return false;
+
     }
 
     void MoveDown()
@@ -129,6 +177,9 @@ public class Grup : MonoBehaviour
 
             // Spawn next Group
             gameController.SpawnRandomFigure();
+
+            // Delete trail
+            DestroyHardFallTrails();
 
             // Disable script
             enabled = false;

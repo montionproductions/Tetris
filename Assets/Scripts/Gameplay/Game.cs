@@ -30,6 +30,8 @@ public class Game : MonoBehaviour
     private int[] _nextFigures;
     private Transform[] _nextFiguresObjects;
 
+    public static Transform currentFigure;
+
     public class Level
     {
         public float _timeToStart;
@@ -102,10 +104,13 @@ public class Game : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public void GameOver()
+    public IEnumerator GameOver()
     {
-        gameObjectMenu.SetActive(true);
+        GridGenerator.DeleteAllBoxes();
         isGameOver = true;
+
+        yield return new WaitForSeconds(2.5f);
+        gameObjectMenu.SetActive(true);
     }
 
     public void ExitGame()
@@ -150,6 +155,8 @@ public class Game : MonoBehaviour
     {
         Transform obj = Instantiate(figures[_nextFigures[0]], spawnPoint.transform.position, Quaternion.identity);
         _getNextFigure();
+
+        currentFigure = obj;
 
         return obj;
     }

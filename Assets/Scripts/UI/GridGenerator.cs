@@ -146,12 +146,28 @@ public class GridGenerator : MonoBehaviour
         }
     }
 
+    public static void DeleteAllBoxes()
+    {
+        for (int y = 0; y < rows; y++)
+        {
+            for (int elementColum = 0; elementColum < colums; elementColum++)
+            {
+                //Destroy(grid[elementRow, row].gameObject);
+                if (grid[elementColum, y] != null)
+                {
+                    grid[elementColum, y].GetComponent<Box>().RemoveBox((elementColum * 0.01f), 0.35f + (elementColum * 0.01f));
+                    grid[elementColum, y] = null;
+                }
+            }
+        }
+    }
+
     public static void DeleteColum(int elementRow)
     {
         for (int elementColum = 0; elementColum < rows; ++elementColum)
         {
             //Destroy(grid[elementRow, row].gameObject);
-            if (grid[elementRow, elementColum] != null)
+            if (grid[elementRow, elementColum] != null && grid[elementRow, elementColum].parent != Game.currentFigure)
             {
                 grid[elementRow, elementColum].GetComponent<Box>().DeleteBox((elementColum * 0.01f), 0.35f + (elementColum * 0.01f));
                 grid[elementRow, elementColum] = null;

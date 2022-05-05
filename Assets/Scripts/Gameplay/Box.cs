@@ -51,11 +51,27 @@ public class Box : MonoBehaviour
 
     }
 
+    private IEnumerator RemoveAnimation(float timeToStart)
+    {
+        yield return new WaitForSeconds(timeToStart);
+        //GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        GetComponent<SpriteRenderer>().sortingOrder = 3;
+        StartCoroutine("DisoveAnimation", 0.1f);
+        StartCoroutine("ScaleAnimation", 0.025f);
+
+    }
+
     public void DeleteBox(float timeToStart, float timeToDestroy)
     {
         StartCoroutine("StartAnimation", timeToStart);
         Destroy(this.gameObject, timeToDestroy);
         //Debug.Log("Box destroyed");
+    }
+
+    public void RemoveBox(float timeToStart, float timeToDestroy)
+    {
+        StartCoroutine("RemoveAnimation", timeToStart);
+        Destroy(this.gameObject, timeToDestroy);
     }
 
     public void MoveDown()
