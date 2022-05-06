@@ -10,6 +10,8 @@ public class Game : MonoBehaviour
     public Transform[] figuresPreview;
     public Transform[] nextFiguresSpawnPoints;
 
+    public GameObject GameElements;
+
     public float spawnTime;
     public Transform spawnPoint;
 
@@ -72,6 +74,8 @@ public class Game : MonoBehaviour
 
     public void InitGame()
     {
+        GameElements.SetActive(true);
+
         _initLevels();
 
         TimeTimer = 0f;
