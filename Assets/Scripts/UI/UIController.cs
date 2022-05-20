@@ -24,20 +24,23 @@ public class UIController : MonoBehaviour
     {
         gameController = GameObject.FindObjectOfType<Game>();
 
-        ScoreText = GameObject.Find("ScoreText").GetComponent<TMP_Text>();
-        LevelText = GameObject.Find("LevelText").GetComponent<TMP_Text>();
-        LinesText = GameObject.Find("LinesText").GetComponent<TMP_Text>();
+        //ScoreText = GameObject.Find("ScoreText").GetComponent<TMP_Text>();
+        //LevelText = GameObject.Find("LevelText").GetComponent<TMP_Text>();
+        //LinesText = GameObject.Find("LinesText").GetComponent<TMP_Text>();
 
         // Find start timer
         var Timer = GameObject.Find("Timer");
         if (Timer != null)
             StartCounter = Timer;
 
-        TimeText = GameObject.Find("TimeText").GetComponent<TMP_Text>();
+        //TimeText = GameObject.Find("TimeText").GetComponent<TMP_Text>();
     }
 
     private void Start()
     {
+        if (!Game.isGameStarted)
+            return;
+
         ResetText();
     }
 

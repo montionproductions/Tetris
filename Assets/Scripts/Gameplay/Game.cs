@@ -11,6 +11,7 @@ public class Game : MonoBehaviour
     public Transform[] nextFiguresSpawnPoints;
 
     public GameObject GameElements;
+    public GameObject gameObjectMenu;
 
     public float spawnTime;
     public Transform spawnPoint;
@@ -24,8 +25,6 @@ public class Game : MonoBehaviour
     public static float TimeTimer = 0f;
     public static bool isGameStarted = false;
     public static bool isGameOver = false;
-
-    public GameObject gameObjectMenu;
 
     public List<Level> levels;
 
