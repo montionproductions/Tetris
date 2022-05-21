@@ -13,10 +13,6 @@ public class UIController : MonoBehaviour
 
     public int scoreMultiplier = 110;
 
-    private int _score = 0;
-    private int _level = 1;
-    private int _lines = 0;
-
     private Game gameController;
 
     // Start is called before the first frame update
@@ -55,13 +51,13 @@ public class UIController : MonoBehaviour
 
     public void ResetText()
     {
-        _score = 0;
+        Game._score = 0;
         UpdateScore();
 
-        _level = 1;
-        UpdateLevel(_level);
+        Game._level = 1;
+        UpdateLevel(Game._level);
 
-        _lines = 0;
+        Game._lines = 0;
         UpdateLines();
 
         StartCounter.SetActive(true);
@@ -69,24 +65,24 @@ public class UIController : MonoBehaviour
 
     private void UpdateScore()
     {
-        ScoreText.text = _score.ToString();
+        ScoreText.text = Game._score.ToString();
     }
 
     public void UpdateLevel(int level)
     {
-        _level = level;
-        LevelText.text = "Level:\n<size=130%>" + _level.ToString();
+        Game._level = level;
+        LevelText.text = "Level:\n<size=130%>" + Game._level.ToString();
     }
 
     private void UpdateLines()
     {
-        LinesText.text = "Lines:\n<size=130%>" + _lines.ToString();
+        LinesText.text = "Lines:\n<size=130%>" + Game._lines.ToString();
     }
 
     public void AddLine(int line)
     {
-        _lines += line;
-        _score = _lines * scoreMultiplier;
+        Game._lines += line;
+        Game._score = Game._lines * scoreMultiplier;
         //_level = GetLevel();
 
         UpdateLines();

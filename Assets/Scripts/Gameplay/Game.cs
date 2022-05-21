@@ -11,7 +11,8 @@ public class Game : MonoBehaviour
     public Transform[] nextFiguresSpawnPoints;
 
     public GameObject GameElements;
-    public GameObject gameObjectMenu;
+    public GameObject gameOverMenu;
+    public GameObject inputScore;
 
     public float spawnTime;
     public Transform spawnPoint;
@@ -32,6 +33,11 @@ public class Game : MonoBehaviour
     private Transform[] _nextFiguresObjects;
 
     public static Transform currentFigure;
+
+    static public int _score = 0;
+    static public int _highScore = 0;
+    static public int _level = 1;
+    static public int _lines = 0;
 
     public class Level
     {
@@ -113,7 +119,11 @@ public class Game : MonoBehaviour
         isGameOver = true;
 
         yield return new WaitForSeconds(2.5f);
-        gameObjectMenu.SetActive(true);
+
+        if (LeaderboardController.UpdateHighScore(Game._score))
+            inputScore.SetActive(true);
+        else
+            gameOverMenu.SetActive(true);
     }
 
     public void ExitGame()

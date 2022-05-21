@@ -32,7 +32,7 @@ public class LeaderboardController : MonoBehaviour
         }
     }
 
-    [SerializeField] public Leaderboard m_leaderboard = new Leaderboard();
+    [SerializeField] static public Leaderboard m_leaderboard = new Leaderboard();
 
     public GameObject score_ui_element;
     public GameObject viewport_content;
@@ -83,7 +83,7 @@ public class LeaderboardController : MonoBehaviour
         }
     }
 
-    public void AddNewScore(string name, int score)
+    static public void AddNewScore(string name, int score)
     {
         m_leaderboard.Add(name, score);
     }
@@ -93,9 +93,23 @@ public class LeaderboardController : MonoBehaviour
         return p1.score.CompareTo(p2.score);
     }
 
-    public void SaveLeaderboard()
+    static public void SaveLeaderboard()
     {
         string data = JsonUtility.ToJson(m_leaderboard);
         File.WriteAllText(Application.dataPath + "/Leaderboard.json", data);
+    }
+
+    static public bool UpdateHighScore(int newScore)
+    {
+        Debug.Log("New score: " + newScore.ToString());
+        Debug.Log("Last score: " + Game._highScore.ToString());
+
+        if (newScore > Game._highScore)
+        {
+            Game._highScore = Game._score;
+            return true;
+        }
+
+        return false;
     }
 }
