@@ -22,7 +22,7 @@ public class LeaderboardController : MonoBehaviour
     public class Leaderboard
     {
         public float ver = 0.1f;
-        public string date = "05/20/2022";
+        public string date = "05/21/2022";
         public List<Score> m_leaderboard = new List<Score>();
 
         public void Add(string name, int score)
@@ -40,10 +40,12 @@ public class LeaderboardController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //AddNewScore("Monti", 254);
-        //AddNewScore("Francisco", 4800);
+        /*AddNewScore("Monti2", 64);
+        AddNewScore("Francisco", 4800);
+        AddNewScore("Francisco", 48);
 
-        //SaveLeaderboard();
+        SaveLeaderboard();*/
+        //ClearLeaderboard();
         LoadLeaderboard();
         UpdateScoreUI();
     }
@@ -56,7 +58,7 @@ public class LeaderboardController : MonoBehaviour
 
     void LoadLeaderboard()
     {
-        var reader = File.OpenText(Application.dataPath + "/Leaderboard.json");
+        var reader = File.OpenText(Application.persistentDataPath + "/Leaderboard.json");
         string json = "";
 
         while (!reader.EndOfStream)
@@ -73,13 +75,31 @@ public class LeaderboardController : MonoBehaviour
 
     public void UpdateScoreUI()
     {
+        int index = 1;
         foreach (Score score in m_leaderboard.m_leaderboard)
         {
             var element = Instantiate(score_ui_element, viewport_content.transform);
-            element.transform.GetChild(0).GetComponent<TMP_Text>().text = "0";
+            element.transform.GetChild(0).GetComponent<TMP_Text>().text = index.ToString();
             element.transform.GetChild(1).GetComponent<TMP_Text>().text = score.name;
             element.transform.GetChild(2).GetComponent<TMP_Text>().text = score.score.ToString();
 
+            RankingCustomColor(element.transform.GetChild(0).GetComponent<TMP_Text>(), index);
+            index++;
+
+        }
+    }
+
+    private void RankingCustomColor(TMP_Text text, int index)
+    {
+        if (index == 1)
+        {
+            text.color = new Color(.99215f, 0.8823f, 0f, 1f);
+        } else if(index == 2)
+        {
+            text.color = new Color(0.7921f, 0.7725f, 0.7921f, 1f);
+        } else if(index == 3)
+        {
+            text.color = new Color(0.6901f, 0.2941f, 0.0823f, 1f);
         }
     }
 
@@ -88,15 +108,26 @@ public class LeaderboardController : MonoBehaviour
         m_leaderboard.Add(name, score);
     }
 
-    public int SortByScore(Score p1, Score p2)
+    static int SortByScore(Score p1, Score p2)
     {
         return p1.score.CompareTo(p2.score);
     }
 
     static public void SaveLeaderboard()
     {
+        m_leaderboard.m_leaderboard.Sort(SortByScore);
+        m_leaderboard.m_leaderboard.Reverse();
+
         string data = JsonUtility.ToJson(m_leaderboard);
-        File.WriteAllText(Application.dataPath + "/Leaderboard.json", data);
+        File.WriteAllText(Application.persistentDataPath + "/Leaderboard.json", data);
+    }
+
+    static public void ClearLeaderboard()
+    {
+        Leaderboard newLeaderboard = new Leaderboard();
+
+        string data = JsonUtility.ToJson(newLeaderboard);
+        File.WriteAllText(Application.persistentDataPath + "/Leaderboard.json", data);
     }
 
     static public bool UpdateHighScore(int newScore)
