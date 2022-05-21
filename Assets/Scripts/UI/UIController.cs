@@ -60,7 +60,7 @@ public class UIController : MonoBehaviour
         Game._lines = 0;
         UpdateLines();
 
-        StartCounter.SetActive(true);
+        //StartCounter.SetActive(true);
     }
 
     private void UpdateScore()
