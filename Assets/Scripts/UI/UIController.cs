@@ -83,7 +83,9 @@ public class UIController : MonoBehaviour
     {
         Game._lines += line;
         Game._score = Game._lines * scoreMultiplier;
-        //_level = GetLevel();
+
+        if (LeaderboardController.UpdateHighScore(Game._score))
+            Game.OnNewHighScoreWrote();
 
         UpdateLines();
         UpdateScore();

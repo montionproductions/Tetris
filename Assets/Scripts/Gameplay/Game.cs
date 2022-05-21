@@ -36,8 +36,12 @@ public class Game : MonoBehaviour
 
     static public int _score = 0;
     static public int _highScore = 0;
+    static public bool _highScoreAchieved = false;
+
     static public int _level = 1;
+
     static public int _lines = 0;
+    static public int _linesCounter = 0; // Store lines that player got in the last 3 seconds
 
     public class Level
     {
@@ -207,5 +211,26 @@ public class Game : MonoBehaviour
     {
         TimeTimer += Time.deltaTime;
         // Implements UI Controller
+    }
+
+    static public void On4LinesWin()
+    {
+        Debug.Log("4 LINES WINED!!");
+        Game._linesCounter = 0;
+    }
+
+    static public void On2LinesWin()
+    {
+        Debug.Log("2 LINES WINED!!");
+        Game._linesCounter = 0;
+    }
+
+    static public void OnNewHighScoreWrote()
+    {
+        if (_highScoreAchieved)
+            return;
+
+        Debug.Log("NEW HIGH SCORE!!");
+        _highScoreAchieved = true;
     }
 }

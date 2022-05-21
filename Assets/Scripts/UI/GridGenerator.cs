@@ -141,9 +141,22 @@ public class GridGenerator : MonoBehaviour
                 DeleteRow(y);
                 DecreaseRowsAbove(y + 1);
                 GameObject.FindObjectOfType<UIController>().AddLine(1);
+                Game._linesCounter++;
                 --y;
             }
         }
+
+        if (Game._linesCounter == 4)
+        {
+            Game.On4LinesWin();
+        }
+
+        if (Game._linesCounter == 2)
+        {
+            Game.On2LinesWin();
+        }
+
+        Game._linesCounter = 0;
     }
 
     public static void DeleteAllBoxes()
