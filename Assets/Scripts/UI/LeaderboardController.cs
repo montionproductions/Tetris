@@ -135,9 +135,8 @@ public class LeaderboardController : MonoBehaviour
         Debug.Log("New score: " + newScore.ToString());
         Debug.Log("Last score: " + Game._highScore.ToString());
 
-        if (newScore > Game._highScore)
+        if (newScore >= Game._highScore)
         {
-            Game._highScore = Game._score;
             return true;
         }
 

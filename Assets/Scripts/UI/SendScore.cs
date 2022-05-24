@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class SendScore : MonoBehaviour
 {
-    private TMP_InputField inputName;
-    private Button sendButton;
+    public TMP_InputField inputName;
+    public Button sendButton;
 
     // Start is called before the first frame update
     void Awake()

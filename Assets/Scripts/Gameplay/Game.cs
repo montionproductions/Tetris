@@ -13,6 +13,7 @@ public class Game : MonoBehaviour
     public GameObject GameElements;
     public GameObject gameOverMenu;
     public GameObject inputScore;
+    public GameObject highScoreText;
 
     public float spawnTime;
     public Transform spawnPoint;
@@ -127,7 +128,7 @@ public class Game : MonoBehaviour
         if (LeaderboardController.UpdateHighScore(Game._score))
             inputScore.SetActive(true);
         else
-            gameOverMenu.SetActive(true);
+            gameOverMenu.SetActive(true);            
     }
 
     public void ExitGame()
@@ -225,12 +226,14 @@ public class Game : MonoBehaviour
         Game._linesCounter = 0;
     }
 
-    static public void OnNewHighScoreWrote()
+    public void OnNewHighScoreWrote()
     {
         if (_highScoreAchieved)
             return;
 
         Debug.Log("NEW HIGH SCORE!!");
         _highScoreAchieved = true;
+
+        highScoreText.SetActive(true);
     }
 }

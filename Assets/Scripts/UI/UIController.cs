@@ -34,9 +34,6 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        if (!Game.isGameStarted)
-            return;
-
         ResetText();
     }
 
@@ -59,8 +56,6 @@ public class UIController : MonoBehaviour
 
         Game._lines = 0;
         UpdateLines();
-
-        //StartCounter.SetActive(true);
     }
 
     private void UpdateScore()
@@ -85,7 +80,10 @@ public class UIController : MonoBehaviour
         Game._score = Game._lines * scoreMultiplier;
 
         if (LeaderboardController.UpdateHighScore(Game._score))
-            Game.OnNewHighScoreWrote();
+        {
+            gameController.OnNewHighScoreWrote();
+            Game._highScore = Game._score;
+        }
 
         UpdateLines();
         UpdateScore();

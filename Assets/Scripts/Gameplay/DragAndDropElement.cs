@@ -21,6 +21,7 @@ public class DragAndDropElement : MonoBehaviour
 
     void OnMouseEnter()
     {
+        originalColor = GetComponent<Renderer>().material.color;
         GetComponent<Renderer>().material.color = mouseOverColor;
 
         if(GameObject.FindObjectOfType<TouchGestureGrup>() != null)
