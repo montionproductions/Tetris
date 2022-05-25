@@ -15,6 +15,9 @@ public class Game : MonoBehaviour
     public GameObject inputScore;
     public GameObject highScoreText;
 
+    public ParticleSystem TwoLinesParticleSystem;
+    public ParticleSystem FourLinesParticleSystem;
+
     public float spawnTime;
     public Transform spawnPoint;
 
@@ -44,6 +47,8 @@ public class Game : MonoBehaviour
     static public int _lines = 0;
     static public int _linesCounter = 0; // Store lines that player got in the last 3 seconds
 
+    static public Game gameInstance;
+
     public class Level
     {
         public float _timeToStart;
@@ -58,6 +63,10 @@ public class Game : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        gameInstance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -214,16 +223,24 @@ public class Game : MonoBehaviour
         // Implements UI Controller
     }
 
-    static public void On4LinesWin()
+    static public void On4LinesWin(int line)
     {
         Debug.Log("4 LINES WINED!!");
         Game._linesCounter = 0;
+
+        var currentPos = gameInstance.FourLinesParticleSystem.transform.position;
+        gameInstance.FourLinesParticleSystem.transform.position = new Vector3(currentPos.x, line, currentPos.z);
+        gameInstance.FourLinesParticleSystem.Play();
     }
 
-    static public void On2LinesWin()
+    static public void On2LinesWin(int line)
     {
         Debug.Log("2 LINES WINED!!");
         Game._linesCounter = 0;
+
+        var currentPos = gameInstance.TwoLinesParticleSystem.transform.position;
+        gameInstance.TwoLinesParticleSystem.transform.position = new Vector3(currentPos.x, line, currentPos.z);
+        gameInstance.TwoLinesParticleSystem.Play();
     }
 
     public void OnNewHighScoreWrote()

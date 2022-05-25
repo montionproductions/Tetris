@@ -134,6 +134,8 @@ public class GridGenerator : MonoBehaviour
 
     public static void DeleteFullRows()
     {
+        var linePosition = 0;
+
         for (int y = 0; y < rows; ++y)
         {
             if (IsRowFull(y))
@@ -141,6 +143,7 @@ public class GridGenerator : MonoBehaviour
                 DeleteRow(y);
                 DecreaseRowsAbove(y + 1);
                 GameObject.FindObjectOfType<UIController>().AddLine(1);
+                linePosition = y;
                 Game._linesCounter++;
                 --y;
             }
@@ -148,12 +151,12 @@ public class GridGenerator : MonoBehaviour
 
         if (Game._linesCounter == 4)
         {
-            Game.On4LinesWin();
+            Game.On4LinesWin(linePosition);
         }
 
         if (Game._linesCounter == 2)
         {
-            Game.On2LinesWin();
+            Game.On2LinesWin(linePosition);
         }
 
         Game._linesCounter = 0;

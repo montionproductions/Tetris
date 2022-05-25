@@ -218,6 +218,8 @@ public class Grup : MonoBehaviour
 
                 DestroyHardFallTrails();
 
+                ShakeCamera.ActivateShake();
+
                 // Disable script
                 enabled = false;
                 fall = false;
