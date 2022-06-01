@@ -14,8 +14,10 @@ public class Game : MonoBehaviour
     public GameObject gameOverMenu;
     public GameObject inputScore;
     public GameObject highScoreText;
+    public GameObject soundSystem;
 
     public ParticleSystem TwoLinesParticleSystem;
+    public ParticleSystem ThreeLinesParticleSystem;
     public ParticleSystem FourLinesParticleSystem;
 
     public float spawnTime;
@@ -48,6 +50,7 @@ public class Game : MonoBehaviour
     static public int _linesCounter = 0; // Store lines that player got in the last 3 seconds
 
     static public Game gameInstance;
+    static public SoundSystem soundSystemInstance;
 
     public class Level
     {
@@ -66,6 +69,13 @@ public class Game : MonoBehaviour
     private void Awake()
     {
         gameInstance = this;
+
+        if(soundSystemInstance == null)
+        {
+            soundSystemInstance = Instantiate(soundSystem).GetComponent<SoundSystem>();
+            DontDestroyOnLoad(soundSystemInstance);
+        }
+            
     }
 
     // Start is called before the first frame update
@@ -101,6 +111,7 @@ public class Game : MonoBehaviour
         isPaused = false;
         isGameStarted = true;
         isGameOver = false;
+        _highScoreAchieved = false;
 
         _nextFigures = new int[3];
         _nextFiguresObjects = new Transform[3];
@@ -243,6 +254,16 @@ public class Game : MonoBehaviour
         gameInstance.TwoLinesParticleSystem.Play();
     }
 
+    static public void On3LinesWin(int line)
+    {
+        Debug.Log("3 LINES WINED!!");
+        Game._linesCounter = 0;
+
+        var currentPos = gameInstance.ThreeLinesParticleSystem.transform.position;
+        gameInstance.ThreeLinesParticleSystem.transform.position = new Vector3(currentPos.x, line, currentPos.z);
+        gameInstance.ThreeLinesParticleSystem.Play();
+    }
+
     public void OnNewHighScoreWrote()
     {
         if (_highScoreAchieved)
@@ -252,5 +273,9 @@ public class Game : MonoBehaviour
         _highScoreAchieved = true;
 
         highScoreText.SetActive(true);
+
+        // Backgound Animation
+        Animator backgroundAnimator = GameObject.Find("LevelBack").GetComponentInChildren<Animator>();
+        backgroundAnimator.SetTrigger("HighScore");
     }
 }

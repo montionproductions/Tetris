@@ -6,22 +6,15 @@ using UnityEngine;
 
 public class SoundSystem : MonoBehaviour
 {
-    AudioSource musicController; 
+    static AudioSource musicController;
 
     private void Awake()
     {
         musicController = GetComponent<AudioSource>();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    static void Init()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Cargar volumen de archivo de configuracion .json
     }
 }

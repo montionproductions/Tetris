@@ -159,6 +159,11 @@ public class GridGenerator : MonoBehaviour
             Game.On2LinesWin(linePosition);
         }
 
+        if (Game._linesCounter == 3)
+        {
+            Game.On3LinesWin(linePosition);
+        }
+
         Game._linesCounter = 0;
     }
 
