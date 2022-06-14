@@ -16,7 +16,7 @@ public class DragAndDropElement : MonoBehaviour
     {
         CompleteRow = 0,
         DeleteColum = 1,
-        DeleteColor = 3
+        DeleteRow = 3
     }
 
     void OnMouseEnter()
@@ -57,8 +57,8 @@ public class DragAndDropElement : MonoBehaviour
             case PowerUpType.DeleteColum:
                 PowerUp_DeleteColum();
                 break;
-            case PowerUpType.DeleteColor:
-                PowerUp_DeleteColor();
+            case PowerUpType.DeleteRow:
+                PowerUp_DeleteRow();
                 break;
         }  
     }
@@ -67,8 +67,8 @@ public class DragAndDropElement : MonoBehaviour
     {
         if (PowerUps.IsValidGridPos(transform))
         {
-            PowerUps.DeleteRow(transform);
-            enabled = false;
+            PowerUps.CompleteRow(transform);
+            Destroy(this);
         }
         else
         {
@@ -90,9 +90,17 @@ public class DragAndDropElement : MonoBehaviour
         }
     }
 
-    private void PowerUp_DeleteColor()
+    private void PowerUp_DeleteRow()
     {
-        // Implements
+        if(PowerUps.IsValidRow(transform))
+        {
+            PowerUps.DeleteRow(transform);
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            transform.position = startPost;
+        }
     }
 
     void Update()

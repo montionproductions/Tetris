@@ -31,7 +31,7 @@ public class PowerUps : MonoBehaviour
         return v;
     }
 
-    public static void DeleteRow(Transform box)
+    public static void CompleteRow(Transform box)
     {
         // Add box to grid
         Vector2 v = PutBox(box);
@@ -45,6 +45,12 @@ public class PowerUps : MonoBehaviour
     {
         Vector2 v = GridGenerator.RoundVec2(box.position);
         GridGenerator.DeleteColum((int)v.x);
+    }
+
+    public static void DeleteRow(Transform box)
+    {
+        Vector2 v = GridGenerator.RoundVec2(box.position);
+        GridGenerator.DeleteRowPower((int)v.y);
     }
 
     public static bool IsValidGridPos(Transform box)
@@ -76,6 +82,19 @@ public class PowerUps : MonoBehaviour
         if (box.position.y > 19 || box.position.y < 0)
             return false;
     
+        return true;
+    }
+
+    public static bool IsValidRow(Transform box)
+    {
+        Vector2 v = GridGenerator.RoundVec2(box.position);
+
+        if (!GridGenerator.InsideBorder(v))
+            return false;
+
+        if (box.position.x > 10 || box.position.y < 0)
+            return false;
+
         return true;
     }
 }

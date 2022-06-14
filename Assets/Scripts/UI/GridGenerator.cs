@@ -94,9 +94,11 @@ public class GridGenerator : MonoBehaviour
     {
         for (int elementRow = 0; elementRow < colums; ++elementRow)
         {
-            //Destroy(grid[elementRow, row].gameObject);
-            grid[elementRow, row].GetComponent<Box>().DeleteBox((elementRow * 0.01f), 0.35f + (elementRow * 0.01f));
-            grid[elementRow, row] = null;
+            if(grid[elementRow, row] != null)
+            {
+                grid[elementRow, row].GetComponent<Box>().DeleteBox((elementRow * 0.01f), 0.35f + (elementRow * 0.01f));
+                grid[elementRow, row] = null;
+            }
         }
     }
 
@@ -194,5 +196,13 @@ public class GridGenerator : MonoBehaviour
                 grid[elementRow, elementColum] = null;
             }
         }
+    }
+
+    public static void DeleteRowPower(int row)
+    {
+        DeleteRow(row);
+        DecreaseRowsAbove(row + 1);
+        GameObject.FindObjectOfType<UIController>().AddLine(1);
+        Game._linesCounter++;
     }
 }
