@@ -9,6 +9,7 @@ public class PowerUpsMenu : MonoBehaviour
     public GameObject powerUpMenu;
 
     public Transform[] powerUps = new Transform[3];
+    public Transform[] spawnPointsPowerUps = new Transform[3];
 
     void Start()
     {
@@ -18,10 +19,7 @@ public class PowerUpsMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonUp(0))
-        {
-            ShowPowerUpsMenu(false);
-        }
+        
     }
 
     private void OnMouseDown()
@@ -35,5 +33,25 @@ public class PowerUpsMenu : MonoBehaviour
         powerUpMenu.SetActive(active);
 
         GetComponent<SpriteRenderer>().enabled = !active;
+    }
+
+    public void InstantiatePowerUp(DragAndDropElement.PowerUpType powerTime)
+    {
+        _addPowerUp(powerTime);
+    }
+
+    private void _addPowerUp(DragAndDropElement.PowerUpType powerTime)
+    {
+        int idPowerUp = (int)powerTime;
+
+        if (spawnPointsPowerUps[idPowerUp].childCount > 0)
+        {
+            Debug.Log("PowerUpsMenu: Add power up");
+        } else
+        {
+            var obj = Instantiate(powerUps[idPowerUp], spawnPointsPowerUps[idPowerUp]);
+            //obj.transform.position = new Vector3(0f, 0f, 0f);
+        }
+
     }
 }

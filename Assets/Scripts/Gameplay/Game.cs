@@ -39,6 +39,7 @@ public class Game : MonoBehaviour
     private Transform[] _nextFiguresObjects;
 
     public static Transform currentFigure;
+    public PowerUpsMenu m_powerUpsMenu;
 
     static public int _score = 0;
     static public int _highScore = 0;
@@ -242,6 +243,8 @@ public class Game : MonoBehaviour
         var currentPos = gameInstance.FourLinesParticleSystem.transform.position;
         gameInstance.FourLinesParticleSystem.transform.position = new Vector3(currentPos.x, line, currentPos.z);
         gameInstance.FourLinesParticleSystem.Play();
+
+        gameInstance.m_powerUpsMenu.InstantiatePowerUp(DragAndDropElement.PowerUpType.DeleteRow);
     }
 
     static public void On2LinesWin(int line)
@@ -252,6 +255,8 @@ public class Game : MonoBehaviour
         var currentPos = gameInstance.TwoLinesParticleSystem.transform.position;
         gameInstance.TwoLinesParticleSystem.transform.position = new Vector3(currentPos.x, line, currentPos.z);
         gameInstance.TwoLinesParticleSystem.Play();
+
+        gameInstance.m_powerUpsMenu.InstantiatePowerUp(DragAndDropElement.PowerUpType.CompleteRow);
     }
 
     static public void On3LinesWin(int line)
@@ -262,6 +267,8 @@ public class Game : MonoBehaviour
         var currentPos = gameInstance.ThreeLinesParticleSystem.transform.position;
         gameInstance.ThreeLinesParticleSystem.transform.position = new Vector3(currentPos.x, line, currentPos.z);
         gameInstance.ThreeLinesParticleSystem.Play();
+
+        gameInstance.m_powerUpsMenu.InstantiatePowerUp(DragAndDropElement.PowerUpType.DeleteColum);
     }
 
     public void OnNewHighScoreWrote()
