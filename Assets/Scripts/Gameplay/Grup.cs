@@ -8,11 +8,23 @@ public class Grup : MonoBehaviour
     public Transform boxSelected;
     public Transform trail;
     public bool isNoRatable = false;
+    public FigureType figureType;
 
     private Transform boxSelectedObj;
 
     float lastFall = 0f;
     float _pressTime = 0f;
+
+    public enum FigureType
+    {
+        L = 0,
+        T = 1,
+        Z = 2,
+        O = 3,
+        J = 4,
+        S = 5,
+        I = 6
+    };
 
     // Start is called before the first frame update
     void Awake()
@@ -227,6 +239,19 @@ public class Grup : MonoBehaviour
                 Destroy(boxSelectedObj.gameObject);
             }
         }
+    }
+
+    public void RemoveFigureFromGrid()
+    {
+        // Remove old children from grid
+        for (int y = 0; y < GridGenerator.rows; ++y)
+            for (int x = 0; x < GridGenerator.colums; ++x)
+                if (GridGenerator.grid[x, y] != null)
+                    if (GridGenerator.grid[x, y].parent == transform)
+                        GridGenerator.grid[x, y] = null;
+
+        Destroy(boxSelectedObj.gameObject);
+        Destroy(this.gameObject);
     }
 
     bool IsValidGridPos(Transform transformObj)

@@ -342,6 +342,8 @@ MonoBehaviour:
   gameController: {fileID: 0}
   boxSelected: {fileID: 1080178453155293627, guid: 53d65c06bf7777a4eb79eb10e5bdb5d3, type: 3}
   trail: {fileID: 8029491497306648111, guid: ca6871eaf0d348246822888729bc2dd5, type: 3}
+  isNoRatable: 0
+  figureType: 1
 --- !u!114 &5095181306766117419
 MonoBehaviour:
   m_ObjectHideFlags: 0

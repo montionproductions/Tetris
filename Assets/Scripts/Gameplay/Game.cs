@@ -200,6 +200,15 @@ public class Game : MonoBehaviour
         return obj;
     }
 
+    public Transform SpawnFigure(Grup.FigureType type)
+    {
+        Transform obj = Instantiate(figures[(int)type], spawnPoint.transform.position, Quaternion.identity);
+
+        currentFigure = obj;
+
+        return obj;
+    }
+
     private void _initLevels()
     {
         levels = new List<Level>();
