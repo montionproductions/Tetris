@@ -26,6 +26,6 @@ public class GetPowerUp : MonoBehaviour
         Instantiate(menu.powerUps[(int)powerUpType], new Vector3(mousePos.x, mousePos.y, 0), Quaternion.identity);
 
         // Hide menu
-        menu.ShowPowerUpsMenu(false);
+        //menu.ShowPowerUpsMenu(false);
     }
 }

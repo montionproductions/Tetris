@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PowerUpsMenu : MonoBehaviour
 {
     // Start is called before the first frame update
-
-    public GameObject powerUpMenu;
-
     public Transform[] powerUps = new Transform[3];
     public Transform[] spawnPointsPowerUps = new Transform[3];
+    public Transform[] notifications = new Transform[3];
+    static public int[] powerUpsCounter = new int[3];
 
-    void Start()
+    void Awake()
     {
-        
+        for(int i = 0; i < powerUpsCounter.Length; i++)
+            powerUpsCounter[i] = 1;
     }
 
     // Update is called once per frame
@@ -22,22 +23,15 @@ public class PowerUpsMenu : MonoBehaviour
         
     }
 
-    private void OnMouseDown()
+    public void InstantiatePowerUp(DragAndDropElement.PowerUpType powerType)
     {
-        // Show PowerUps Menu
-        ShowPowerUpsMenu(true);
-    }
+        if (powerUpsCounter[(int)powerType] > 0)
+            _addPowerUp(powerType);
 
-    public void ShowPowerUpsMenu(bool active)
-    {
-        powerUpMenu.SetActive(active);
+        powerUpsCounter[(int)powerType]--;
 
-        GetComponent<SpriteRenderer>().enabled = !active;
-    }
-
-    public void InstantiatePowerUp(DragAndDropElement.PowerUpType powerTime)
-    {
-        _addPowerUp(powerTime);
+        if (powerUpsCounter[(int)powerType] < 0)
+            powerUpsCounter[(int)powerType] = 0;
     }
 
     private void _addPowerUp(DragAndDropElement.PowerUpType powerTime)
@@ -46,11 +40,17 @@ public class PowerUpsMenu : MonoBehaviour
 
         if (spawnPointsPowerUps[idPowerUp].childCount > 0)
         {
-            Debug.Log("PowerUpsMenu: Add power up");
+            // Show circle
+            notifications[idPowerUp].gameObject.SetActive(true);
+            // Update counter
+            powerUpsCounter[idPowerUp]++;
+            notifications[idPowerUp].GetChild(0).GetComponent<TMP_Text>().text = powerUpsCounter[idPowerUp].ToString();
         } else
         {
+            // Hide circle
+            notifications[idPowerUp].gameObject.SetActive(false);
+
             var obj = Instantiate(powerUps[idPowerUp], spawnPointsPowerUps[idPowerUp]);
-            //obj.transform.position = new Vector3(0f, 0f, 0f);
         }
 
     }

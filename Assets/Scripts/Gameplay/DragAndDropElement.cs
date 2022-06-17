@@ -16,7 +16,7 @@ public class DragAndDropElement : MonoBehaviour
     {
         CompleteRow = 0,
         DeleteColum = 1,
-        DeleteRow = 3
+        DeleteRow = 2
     }
 
     void OnMouseEnter()
@@ -68,6 +68,10 @@ public class DragAndDropElement : MonoBehaviour
         if (PowerUps.IsValidGridPos(transform))
         {
             PowerUps.CompleteRow(transform);
+            transform.parent = null;
+
+            GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(PowerUpType.CompleteRow);
+
             Destroy(this);
         }
         else
@@ -82,6 +86,11 @@ public class DragAndDropElement : MonoBehaviour
         if (PowerUps.IsValidColum(transform))
         {
             PowerUps.DeleteColum(transform);
+            transform.parent = null;
+
+            //Game.powerUpsMenu.InstantiatePowerUp(PowerUpType.DeleteColum);
+            GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(PowerUpType.DeleteColum);
+
             Destroy(this.gameObject);
         }
         else
@@ -95,6 +104,11 @@ public class DragAndDropElement : MonoBehaviour
         if(PowerUps.IsValidRow(transform))
         {
             PowerUps.DeleteRow(transform);
+            transform.parent = null;
+
+            //Game.powerUpsMenu.InstantiatePowerUp(PowerUpType.DeleteRow);
+            GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(PowerUpType.DeleteRow);
+
             Destroy(this.gameObject);
         }
         else
@@ -115,6 +129,6 @@ public class DragAndDropElement : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameObject.FindObjectOfType<TouchGestureGrup>().enabled = true;
+        //GameObject.FindObjectOfType<TouchGestureGrup>().enabled = true;
     }
 }

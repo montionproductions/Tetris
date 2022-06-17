@@ -52,6 +52,7 @@ public class Game : MonoBehaviour
 
     static public Game gameInstance;
     static public SoundSystem soundSystemInstance;
+    static public PowerUpsMenu powerUpsMenu;
 
     public class Level
     {
@@ -76,7 +77,9 @@ public class Game : MonoBehaviour
             soundSystemInstance = Instantiate(soundSystem).GetComponent<SoundSystem>();
             DontDestroyOnLoad(soundSystemInstance);
         }
-            
+
+        if (powerUpsMenu == null)
+            powerUpsMenu = GameObject.FindObjectOfType<PowerUpsMenu>();
     }
 
     // Start is called before the first frame update
@@ -253,7 +256,7 @@ public class Game : MonoBehaviour
         gameInstance.FourLinesParticleSystem.transform.position = new Vector3(currentPos.x, line, currentPos.z);
         gameInstance.FourLinesParticleSystem.Play();
 
-        gameInstance.m_powerUpsMenu.InstantiatePowerUp(DragAndDropElement.PowerUpType.DeleteRow);
+        GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(DragAndDropElement.PowerUpType.DeleteRow);
     }
 
     static public void On2LinesWin(int line)
@@ -265,7 +268,7 @@ public class Game : MonoBehaviour
         gameInstance.TwoLinesParticleSystem.transform.position = new Vector3(currentPos.x, line, currentPos.z);
         gameInstance.TwoLinesParticleSystem.Play();
 
-        gameInstance.m_powerUpsMenu.InstantiatePowerUp(DragAndDropElement.PowerUpType.CompleteRow);
+        GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(DragAndDropElement.PowerUpType.CompleteRow);
     }
 
     static public void On3LinesWin(int line)
@@ -277,7 +280,7 @@ public class Game : MonoBehaviour
         gameInstance.ThreeLinesParticleSystem.transform.position = new Vector3(currentPos.x, line, currentPos.z);
         gameInstance.ThreeLinesParticleSystem.Play();
 
-        gameInstance.m_powerUpsMenu.InstantiatePowerUp(DragAndDropElement.PowerUpType.DeleteColum);
+        GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(DragAndDropElement.PowerUpType.DeleteColum);
     }
 
     public void OnNewHighScoreWrote()
