@@ -38,14 +38,14 @@ public class PowerUpsMenu : MonoBehaviour
     {
         int idPowerUp = (int)powerTime;
 
-        if (spawnPointsPowerUps[idPowerUp].childCount > 0)
+        if (spawnPointsPowerUps[idPowerUp].childCount >= 1)
         {
             // Show circle
             notifications[idPowerUp].gameObject.SetActive(true);
             // Update counter
             powerUpsCounter[idPowerUp]++;
             notifications[idPowerUp].GetChild(0).GetComponent<TMP_Text>().text = powerUpsCounter[idPowerUp].ToString();
-        } else
+        } if (spawnPointsPowerUps[idPowerUp].childCount <= 0)
         {
             // Hide circle
             notifications[idPowerUp].gameObject.SetActive(false);

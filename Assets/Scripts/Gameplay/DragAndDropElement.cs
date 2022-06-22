@@ -49,7 +49,10 @@ public class DragAndDropElement : MonoBehaviour
         dragging = false;
         Time.timeScale = 1.0f;
 
-        switch(powerUpType)
+        if (GameObject.FindObjectOfType<TouchGestureGrup>() != null)
+            GameObject.FindObjectOfType<TouchGestureGrup>().enabled = true;
+
+        switch (powerUpType)
         {
             case PowerUpType.CompleteRow:
                 PowerUp_CompleteRow();
