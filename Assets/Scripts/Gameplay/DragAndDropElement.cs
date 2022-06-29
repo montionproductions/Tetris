@@ -40,8 +40,9 @@ public class DragAndDropElement : MonoBehaviour
     {
         distance = Vector3.Distance(transform.position, Camera.main.transform.position);
         dragging = true;
+
         startPost = transform.position;
-        Time.timeScale = .3f;
+        Time.timeScale = .15f;
     }
 
     void OnMouseUp()
@@ -75,6 +76,8 @@ public class DragAndDropElement : MonoBehaviour
 
             GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(PowerUpType.CompleteRow);
 
+            Game.currentFigure.GetComponent<Grup>().UpdateGrup();
+
             Destroy(this);
         }
         else
@@ -94,6 +97,8 @@ public class DragAndDropElement : MonoBehaviour
             //Game.powerUpsMenu.InstantiatePowerUp(PowerUpType.DeleteColum);
             GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(PowerUpType.DeleteColum);
 
+            Game.currentFigure.GetComponent<Grup>().UpdateGrup();
+
             Destroy(this.gameObject);
         }
         else
@@ -111,6 +116,8 @@ public class DragAndDropElement : MonoBehaviour
 
             //Game.powerUpsMenu.InstantiatePowerUp(PowerUpType.DeleteRow);
             GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(PowerUpType.DeleteRow);
+
+            Game.currentFigure.GetComponent<Grup>().UpdateGrup();
 
             Destroy(this.gameObject);
         }

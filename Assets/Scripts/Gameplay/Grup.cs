@@ -365,4 +365,10 @@ public class Grup : MonoBehaviour
             child.GetChild(0).gameObject.SetActive(active);
         }
     }
+
+    public void UpdateGrup()
+    {
+        Game.currentFigure.GetComponent<Grup>().RemoveFigureFromGrid();
+        Game.gameInstance.SpawnFigure(figureType);
+    }
 }

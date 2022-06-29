@@ -72,7 +72,7 @@ public class Game : MonoBehaviour
     {
         gameInstance = this;
 
-        if(soundSystemInstance == null)
+        if (soundSystemInstance == null)
         {
             soundSystemInstance = Instantiate(soundSystem).GetComponent<SoundSystem>();
             DontDestroyOnLoad(soundSystemInstance);
@@ -219,19 +219,19 @@ public class Game : MonoBehaviour
         levels.Add(new Level(0f, 1f, 1)); // Level 1
         StartCoroutine("StartLevel", levels[0]);
 
-        levels.Add(new Level(60f, .5f, 2)); // Level 2
+        levels.Add(new Level(180f, .85f, 2)); // Level 2
         StartCoroutine("StartLevel", levels[1]);
 
-        levels.Add(new Level(180f, .4f, 3)); // Level 3
+        levels.Add(new Level(360f, .65f, 3)); // Level 3
         StartCoroutine("StartLevel", levels[2]);
 
-        levels.Add(new Level(360f, .35f, 4)); // Level 4
+        levels.Add(new Level(540f, .45f, 4)); // Level 4
         StartCoroutine("StartLevel", levels[3]);
 
-        levels.Add(new Level(540f, .25f, 5)); // Level 5
+        levels.Add(new Level(720f, .35f, 5)); // Level 5
         StartCoroutine("StartLevel", levels[4]);
 
-        levels.Add(new Level(720f, .15f, 6)); // Level 5
+        levels.Add(new Level(980f, .15f, 6)); // Level 6
         StartCoroutine("StartLevel", levels[5]);
     }
 
