@@ -133,7 +133,7 @@ public class DragAndDropElement : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 rayPoint = ray.GetPoint(distance);
-            transform.position = rayPoint;
+            transform.position = new Vector3(rayPoint.x, rayPoint.y, 0.0f);
         }
     }
 
