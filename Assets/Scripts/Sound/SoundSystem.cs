@@ -6,15 +6,38 @@ using UnityEngine;
 
 public class SoundSystem : MonoBehaviour
 {
-    static AudioSource musicController;
+    static AudioSource soundController;
+
+    public AudioClip hardDrope;
+    public AudioClip move;
+    public AudioClip rotate;
+    public List<AudioClip> lines = new List<AudioClip>();
+    public enum linesSounds
+    {
+        TwoLines = 0,
+        ThreeLines = 1,
+        FourLines = 2
+    }
 
     private void Awake()
     {
-        musicController = GetComponent<AudioSource>();
+        soundController = GetComponent<AudioSource>();
     }
 
-    static void Init()
+    public void PlayHardDrope()
     {
-        // Cargar volumen de archivo de configuracion .json
+        soundController.PlayOneShot(hardDrope);
+    }
+    public void PlayMove()
+    {
+        soundController.PlayOneShot(move);
+    }
+    public void PlayRotation()
+    {
+        soundController.PlayOneShot(rotate);
+    }
+    public void PlayLines(linesSounds index)
+    {
+        soundController.PlayOneShot(lines[(int)index]);
     }
 }

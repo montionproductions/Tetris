@@ -14,7 +14,7 @@ public class Game : MonoBehaviour
     public GameObject gameOverMenu;
     public GameObject inputScore;
     public GameObject highScoreText;
-    public GameObject soundSystem;
+    public GameObject musicSystem;
 
     public ParticleSystem TwoLinesParticleSystem;
     public ParticleSystem ThreeLinesParticleSystem;
@@ -51,7 +51,8 @@ public class Game : MonoBehaviour
     static public int _linesCounter = 0; // Store lines that player got in the last 3 seconds
 
     static public Game gameInstance;
-    static public SoundSystem soundSystemInstance;
+    public SoundSystem soundSystemInstance;
+    static public MusicSystem musicSystemInstance;
     static public PowerUpsMenu powerUpsMenu;
 
     public class Level
@@ -72,10 +73,10 @@ public class Game : MonoBehaviour
     {
         gameInstance = this;
 
-        if (soundSystemInstance == null)
+        if (musicSystemInstance == null)
         {
-            soundSystemInstance = Instantiate(soundSystem).GetComponent<SoundSystem>();
-            DontDestroyOnLoad(soundSystemInstance);
+            musicSystemInstance = Instantiate(musicSystem).GetComponent<MusicSystem>();
+            DontDestroyOnLoad(musicSystemInstance);
         }
 
         if (powerUpsMenu == null)
@@ -152,7 +153,7 @@ public class Game : MonoBehaviour
         if (LeaderboardController.UpdateHighScore(Game._score))
             inputScore.SetActive(true);
         else
-            gameOverMenu.SetActive(true);            
+            gameOverMenu.SetActive(true);      
     }
 
     public void ExitGame()
@@ -257,6 +258,8 @@ public class Game : MonoBehaviour
         gameInstance.FourLinesParticleSystem.Play();
 
         GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(DragAndDropElement.PowerUpType.DeleteRow);
+
+        gameInstance.soundSystemInstance.PlayLines(SoundSystem.linesSounds.FourLines);
     }
 
     static public void On2LinesWin(int line)
@@ -269,6 +272,8 @@ public class Game : MonoBehaviour
         gameInstance.TwoLinesParticleSystem.Play();
 
         GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(DragAndDropElement.PowerUpType.CompleteRow);
+
+        gameInstance.soundSystemInstance.PlayLines(SoundSystem.linesSounds.TwoLines);
     }
 
     static public void On3LinesWin(int line)
@@ -281,6 +286,8 @@ public class Game : MonoBehaviour
         gameInstance.ThreeLinesParticleSystem.Play();
 
         GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(DragAndDropElement.PowerUpType.DeleteColum);
+
+        gameInstance.soundSystemInstance.PlayLines(SoundSystem.linesSounds.ThreeLines);
     }
 
     public void OnNewHighScoreWrote()

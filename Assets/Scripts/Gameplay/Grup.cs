@@ -103,6 +103,8 @@ public class Grup : MonoBehaviour
             transform.position += new Vector3(-norDir.x, -norDir.y, 0);
 
         ShowHardFallTrails(true);
+
+        gameController.soundSystemInstance.PlayMove();
     }
 
     void Rotate()
@@ -133,6 +135,8 @@ public class Grup : MonoBehaviour
         }
 
         ShowHardFallTrails(true);
+
+        gameController.soundSystemInstance.PlayRotation();
     }
 
     bool CheckValidRotate(Vector2 boxPosition)
@@ -239,6 +243,8 @@ public class Grup : MonoBehaviour
                 Destroy(boxSelectedObj.gameObject);
             }
         }
+
+        gameController.soundSystemInstance.PlayHardDrope();
     }
 
     public void RemoveFigureFromGrid()
