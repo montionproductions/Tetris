@@ -19,13 +19,10 @@ public class ShakeCamera : MonoBehaviour
 
 	void Awake()
 	{
-		if (camTransform == null)
-		{
-			camTransform = GetComponent(typeof(Transform)) as Transform;
-		}
+		
 	}
 
-	void OnEnable()
+	void Start()
 	{
 		originalPos = camTransform.localPosition;
 	}
@@ -35,6 +32,7 @@ public class ShakeCamera : MonoBehaviour
 		if (shakeDuration > 0)
 		{
 			camTransform.localPosition = originalPos + Random.insideUnitSphere * shakeAmount;
+			camTransform.localPosition = new Vector3(camTransform.localPosition.x, camTransform.localPosition.y, originalPos.z);
 
 			shakeDuration -= Time.deltaTime * decreaseFactor;
 		}

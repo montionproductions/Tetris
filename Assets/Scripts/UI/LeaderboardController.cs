@@ -40,11 +40,11 @@ public class LeaderboardController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*AddNewScore("Monti2", 64);
-        AddNewScore("Francisco", 4800);
-        AddNewScore("Francisco", 48);
+        //AddNewScore("Monti2", 64);
+        //AddNewScore("Francisco", 4800);
+        //AddNewScore("Francisco", 48);
 
-        SaveLeaderboard();*/
+        //SaveLeaderboard();
         //ClearLeaderboard();
         LoadLeaderboard();
         UpdateScoreUI();
