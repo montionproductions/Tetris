@@ -13,7 +13,7 @@ public class UIController : MonoBehaviour
 
     public int scoreMultiplier = 110;
 
-    private Game gameController;
+    static private Game gameController;
 
     // Start is called before the first frame update
     void Awake()

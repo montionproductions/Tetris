@@ -13,6 +13,6 @@ public class ResponsiveUI : MonoBehaviour
     {
         mainCamera = GameObject.FindObjectOfType<Camera>();
 
-        Debug.Log("Width: " + Screen.width.ToString() + ", Height: " + Screen.height.ToString());
+        //Debug.Log("Width: " + Screen.width.ToString() + ", Height: " + Screen.height.ToString());
     }
 }
