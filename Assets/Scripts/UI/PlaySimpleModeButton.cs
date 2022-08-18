@@ -8,13 +8,13 @@ public class PlaySimpleModeButton : MonoBehaviour
     public GameObject mainMenu;
     public StartTimer timer;
     public GameObject gameElements;
-    public Transform transition;
+    public Transition transition;
 
     public void PlayButton()
     {
         Invoke("PlaySimpleMode", 1.5f);
-        PlayEnterAnimation();
-        Invoke("PlayExitAnimation", 1.5f);
+        transition.PlayEnterAnimation();
+        transition.Invoke("PlayExitAnimation", 1.5f);
     }
     private void PlaySimpleMode()
     {
@@ -24,18 +24,5 @@ public class PlaySimpleModeButton : MonoBehaviour
         timer.StartGameCount();
         gameElements.SetActive(true);
     }
-    private void PlayEnterAnimation()
-    {
-        foreach (Transform child in transition)
-        {
-            child.GetComponent<MoveAnimation>().PlayEnterAnimation();
-        }
-    }
-    private void PlayExitAnimation()
-    {
-        foreach (Transform child in transition)
-        {
-            child.GetComponent<MoveAnimation>().PlayExitAnimation();
-        }
-    }
+
 }

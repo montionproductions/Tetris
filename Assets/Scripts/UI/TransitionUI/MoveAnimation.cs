@@ -17,7 +17,6 @@ public class MoveAnimation : MonoBehaviour
     void Start()
     {
         isPlaying = false;
-        grup.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -41,7 +40,6 @@ public class MoveAnimation : MonoBehaviour
         grup.transform.position = firstPos.position;
         grup.GetComponent<UpdateGrupTile>().enabled = false;
         isPlaying = true;
-        grup.gameObject.SetActive(true);
 
         target = lastPos;
     }
