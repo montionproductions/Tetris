@@ -12803,6 +12803,7 @@ GameObject:
   - component: {fileID: 478096618}
   - component: {fileID: 478096617}
   - component: {fileID: 478096616}
+  - component: {fileID: 478096619}
   m_Layer: 5
   m_Name: SentButton
   m_TagString: Untagged
@@ -12912,6 +12913,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 478096614}
   m_CullTransparentMesh: 1
+--- !u!114 &478096619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478096614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c9b8197f2bc5b54b9db41d9155d482e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transition: {fileID: 557800654}
 --- !u!1 &483889406
 GameObject:
   m_ObjectHideFlags: 0
@@ -34244,6 +34258,7 @@ GameObject:
   - component: {fileID: 1322323117}
   - component: {fileID: 1322323116}
   - component: {fileID: 1322323115}
+  - component: {fileID: 1322323118}
   m_Layer: 5
   m_Name: Restart
   m_TagString: Untagged
@@ -34315,9 +34330,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_TargetAssemblyTypeName: Game, Assembly-CSharp
-        m_MethodName: Restart
+      - m_Target: {fileID: 1322323118}
+        m_TargetAssemblyTypeName: ResetButton, Assembly-CSharp
+        m_MethodName: RestartButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -34365,6 +34380,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1322323113}
   m_CullTransparentMesh: 1
+--- !u!114 &1322323118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322323113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c9b8197f2bc5b54b9db41d9155d482e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transition: {fileID: 557800654}
 --- !u!1 &1329971262
 GameObject:
   m_ObjectHideFlags: 0

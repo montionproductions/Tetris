@@ -32,9 +32,7 @@ public class SendScore : MonoBehaviour
         LeaderboardController.AddNewScore(inputName.text, Game._score);
         LeaderboardController.SaveLeaderboard();
 
-        gameObject.SetActive(false);
-
-        gameIns.Restart();
+        sendButton.GetComponent<ResetButton>().RestartButton();
     }
 
     void ShowError()
