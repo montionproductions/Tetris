@@ -96,15 +96,16 @@ public class Grup : MonoBehaviour
 
         // See if it's valid
         if (IsValidGridPos(this.transform))
+        {
             // It's valid. Update grid.
             UpdateGrid();
+            gameController.soundSystemInstance.PlayMove();
+        }
         else
             // Its not valid. revert.
             transform.position += new Vector3(-norDir.x, -norDir.y, 0);
 
         ShowHardFallTrails(true);
-
-        gameController.soundSystemInstance.PlayMove();
     }
 
     void Rotate()
@@ -127,6 +128,7 @@ public class Grup : MonoBehaviour
             {
                 // It's valid. Update grid.
                 UpdateGrid();
+                gameController.soundSystemInstance.PlayRotation();
             } else
             {
                 // Revert rotation
@@ -135,8 +137,6 @@ public class Grup : MonoBehaviour
         }
 
         ShowHardFallTrails(true);
-
-        gameController.soundSystemInstance.PlayRotation();
     }
 
     bool CheckValidRotate(Vector2 boxPosition)
