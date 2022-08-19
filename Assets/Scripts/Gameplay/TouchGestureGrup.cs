@@ -14,6 +14,7 @@ public class TouchGestureGrup : MonoBehaviour
     Game gameController;
 
     private float _pressTime = 0;
+    private float _movingTime = 0;
     private bool _isPressed = false;
     private bool _isMoving = false;
 
@@ -30,6 +31,12 @@ public class TouchGestureGrup : MonoBehaviour
 
         _pressTime += Time.deltaTime;
 
+        if(_isMoving)
+        {
+            _movingTime += Time.deltaTime;
+        }
+        
+
         foreach (Touch touch in Input.touches)
         {
             if (touch.phase == TouchPhase.Began)
@@ -39,6 +46,7 @@ public class TouchGestureGrup : MonoBehaviour
 
                 _isPressed = true;
                 _pressTime = 0;
+                _movingTime = 0;
             }
 
             //Detects Swipe while finger is still moving
@@ -72,7 +80,7 @@ public class TouchGestureGrup : MonoBehaviour
         if (verticalMove() > VERTICAL_SWIPE_THRESHOLD && verticalMove() > horizontalValMove())
         {
             //Debug.Log("Vertical");
-            if (fingerDown.y - fingerUp.y < 0 && _pressTime < .25f)//Down swipe
+            if (fingerDown.y - fingerUp.y < 0 && _pressTime < .25f && _movingTime < .15f)//Down swipe
             {
                 Debug.Log(_pressTime);
                 OnSwipeDownReleased();
@@ -166,6 +174,7 @@ public class TouchGestureGrup : MonoBehaviour
     void OnSwipeDownReleased()
     {
         gameObject.SendMessage("FallHard");
+        _movingTime = 0;
     }
 
     void OnSwipeLeft()

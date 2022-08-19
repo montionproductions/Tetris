@@ -18495,8 +18495,8 @@ MonoBehaviour:
   FourLinesParticleSystem: {fileID: 497527350}
   spawnTime: 3
   spawnPoint: {fileID: 436770725}
-  HorizontalMovSpeed: 0.09
-  VerticalMovSpeed: 0.05
+  HorizontalMovSpeed: 0.1
+  VerticalMovSpeed: 0.08
   RotateSpeed: 0.25
   MovTime: 1
   m_powerUpsMenu: {fileID: 1936730953}
