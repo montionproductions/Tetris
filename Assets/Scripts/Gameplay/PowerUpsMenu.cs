@@ -22,36 +22,41 @@ public class PowerUpsMenu : MonoBehaviour
     {
         
     }
-
-    public void InstantiatePowerUp(DragAndDropElement.PowerUpType powerType)
+    public void AddPowerUp(DragAndDropElement.PowerUpType powerType)
     {
-        if (powerUpsCounter[(int)powerType] > 0)
-            _addPowerUp(powerType);
-
+        powerUpsCounter[(int)powerType]++;
+        _updatePowerUp(powerType);
+    }
+    public void RemovePowerUp(DragAndDropElement.PowerUpType powerType)
+    {
         powerUpsCounter[(int)powerType]--;
 
         if (powerUpsCounter[(int)powerType] < 0)
             powerUpsCounter[(int)powerType] = 0;
+
+        _updatePowerUp(powerType);
     }
 
-    private void _addPowerUp(DragAndDropElement.PowerUpType powerTime)
+    private void _updatePowerUp(DragAndDropElement.PowerUpType powerType)
     {
-        int idPowerUp = (int)powerTime;
+        int idPowerUp = (int)powerType;
 
-        if (spawnPointsPowerUps[idPowerUp].childCount >= 1)
+        if (powerUpsCounter[idPowerUp] > 1) // Spawn power up with the badged
         {
             // Show circle
             notifications[idPowerUp].gameObject.SetActive(true);
             // Update counter
-            powerUpsCounter[idPowerUp]++;
             notifications[idPowerUp].GetChild(0).GetComponent<TMP_Text>().text = powerUpsCounter[idPowerUp].ToString();
-        } if (spawnPointsPowerUps[idPowerUp].childCount <= 0)
+            // Spawn powerup
+            if (spawnPointsPowerUps[idPowerUp].childCount == 0)
+                Instantiate(powerUps[idPowerUp], spawnPointsPowerUps[idPowerUp]);
+        } else if(powerUpsCounter[idPowerUp] == 1)
         {
             // Hide circle
             notifications[idPowerUp].gameObject.SetActive(false);
-
-            var obj = Instantiate(powerUps[idPowerUp], spawnPointsPowerUps[idPowerUp]);
+            // Spawn powerup
+            if (spawnPointsPowerUps[idPowerUp].childCount == 0)
+                Instantiate(powerUps[idPowerUp], spawnPointsPowerUps[idPowerUp]);
         }
-
     }
 }

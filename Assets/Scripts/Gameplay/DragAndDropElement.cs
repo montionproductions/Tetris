@@ -74,7 +74,7 @@ public class DragAndDropElement : MonoBehaviour
             PowerUps.CompleteRow(transform);
             transform.parent = null;
 
-            GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(PowerUpType.CompleteRow);
+            GameObject.FindObjectOfType<PowerUpsMenu>().RemovePowerUp(PowerUpType.CompleteRow);
 
             Game.currentFigure.GetComponent<Grup>().UpdateGrup();
 
@@ -95,7 +95,7 @@ public class DragAndDropElement : MonoBehaviour
             transform.parent = null;
 
             //Game.powerUpsMenu.InstantiatePowerUp(PowerUpType.DeleteColum);
-            GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(PowerUpType.DeleteColum);
+            GameObject.FindObjectOfType<PowerUpsMenu>().RemovePowerUp(PowerUpType.DeleteColum);
 
             Game.currentFigure.GetComponent<Grup>().UpdateGrup();
 
@@ -115,7 +115,7 @@ public class DragAndDropElement : MonoBehaviour
             transform.parent = null;
 
             //Game.powerUpsMenu.InstantiatePowerUp(PowerUpType.DeleteRow);
-            GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(PowerUpType.DeleteRow);
+            GameObject.FindObjectOfType<PowerUpsMenu>().RemovePowerUp(PowerUpType.DeleteRow);
 
             Game.currentFigure.GetComponent<Grup>().UpdateGrup();
 

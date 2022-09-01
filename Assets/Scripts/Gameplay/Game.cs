@@ -257,7 +257,7 @@ public class Game : MonoBehaviour
         gameInstance.FourLinesParticleSystem.transform.position = new Vector3(currentPos.x, line, currentPos.z);
         gameInstance.FourLinesParticleSystem.Play();
 
-        GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(DragAndDropElement.PowerUpType.DeleteRow);
+        GameObject.FindObjectOfType<PowerUpsMenu>().AddPowerUp(DragAndDropElement.PowerUpType.DeleteRow);
 
         gameInstance.soundSystemInstance.PlayLines(SoundSystem.linesSounds.FourLines);
     }
@@ -271,7 +271,7 @@ public class Game : MonoBehaviour
         gameInstance.TwoLinesParticleSystem.transform.position = new Vector3(currentPos.x, line, currentPos.z);
         gameInstance.TwoLinesParticleSystem.Play();
 
-        GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(DragAndDropElement.PowerUpType.CompleteRow);
+        GameObject.FindObjectOfType<PowerUpsMenu>().AddPowerUp(DragAndDropElement.PowerUpType.CompleteRow);
 
         gameInstance.soundSystemInstance.PlayLines(SoundSystem.linesSounds.TwoLines);
     }
@@ -285,7 +285,7 @@ public class Game : MonoBehaviour
         gameInstance.ThreeLinesParticleSystem.transform.position = new Vector3(currentPos.x, line, currentPos.z);
         gameInstance.ThreeLinesParticleSystem.Play();
 
-        GameObject.FindObjectOfType<PowerUpsMenu>().InstantiatePowerUp(DragAndDropElement.PowerUpType.DeleteColum);
+        GameObject.FindObjectOfType<PowerUpsMenu>().AddPowerUp(DragAndDropElement.PowerUpType.DeleteColum);
 
         gameInstance.soundSystemInstance.PlayLines(SoundSystem.linesSounds.ThreeLines);
     }

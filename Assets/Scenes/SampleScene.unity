@@ -18496,7 +18496,7 @@ MonoBehaviour:
   spawnTime: 3
   spawnPoint: {fileID: 436770725}
   HorizontalMovSpeed: 0.1
-  VerticalMovSpeed: 0.08
+  VerticalMovSpeed: 0.05
   RotateSpeed: 0.25
   MovTime: 1
   m_powerUpsMenu: {fileID: 1936730953}
