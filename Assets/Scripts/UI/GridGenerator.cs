@@ -18,13 +18,20 @@ public class GridGenerator : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        grid = new Transform[colums, rows];
+        ResetGrid();
     }
 
     void OnEnable()
     {
-        box = GameObject.Find("BoxBg").transform;
+        GameObject boxObj = GameObject.Find("BoxBg");
 
+        if (boxObj == null)
+        {
+            Debug.LogError("[GridGenerator] BoxBg not found in scene.");
+            return;
+        }
+
+        box = boxObj.transform;
         CreateGrid();
     }
 
@@ -55,15 +62,22 @@ public class GridGenerator : MonoBehaviour
             for (int x = 0; x < colums; x++)
             {
                 Vector3 boxPos = new Vector3(x * displacement, y * displacement, 0);
-                Transform newBox = Instantiate(box, boxPos, Quaternion.identity);
+                Transform newBox = Instantiate(box, this.transform);
+                newBox.localPosition = new Vector3(x * displacement, y * displacement, 0);
+                newBox.localRotation = Quaternion.identity;
+                newBox.localScale = Vector3.one;
+
                 newBox.GetComponent<SpriteRenderer>().enabled = true;
-                newBox.SetParent(this.transform, false);
             }
         }
 
-        this.transform.position = new Vector3(gridPosition.x, gridPosition.y, 0);
+        //this.transform.position = new Vector3(gridPosition.x, gridPosition.y, 0);
     }
 
+    public static void ResetGrid()
+    {
+        grid = new Transform[colums, rows];
+    }
     void RemoveGrid()
     {
         var tempArray = new GameObject[this.transform.childCount];

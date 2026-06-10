@@ -29,7 +29,7 @@ public class Grup : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        gameController = GameObject.FindObjectOfType<Game>();
+        gameController = FindFirstObjectByType<Game>();
     }
 
     void Start()
@@ -99,7 +99,8 @@ public class Grup : MonoBehaviour
         {
             // It's valid. Update grid.
             UpdateGrid();
-            gameController.soundSystemInstance.PlayMove();
+            if (gameController.soundSystemInstance != null)
+                gameController.soundSystemInstance.PlayMove();
         }
         else
             // Its not valid. revert.
@@ -128,7 +129,8 @@ public class Grup : MonoBehaviour
             {
                 // It's valid. Update grid.
                 UpdateGrid();
-                gameController.soundSystemInstance.PlayRotation();
+                if (gameController.soundSystemInstance != null)
+                    gameController.soundSystemInstance.PlayRotation();
             } else
             {
                 // Revert rotation
@@ -244,7 +246,8 @@ public class Grup : MonoBehaviour
             }
         }
 
-        gameController.soundSystemInstance.PlayHardDrope();
+        if (gameController.soundSystemInstance != null)
+            gameController.soundSystemInstance.PlayHardDrope();
     }
 
     public void RemoveFigureFromGrid()

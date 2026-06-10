@@ -80,7 +80,7 @@ public class Game : MonoBehaviour
         }
 
         if (powerUpsMenu == null)
-            powerUpsMenu = GameObject.FindObjectOfType<PowerUpsMenu>();
+            powerUpsMenu = FindFirstObjectByType<PowerUpsMenu>();
     }
 
     // Start is called before the first frame update
@@ -108,15 +108,14 @@ public class Game : MonoBehaviour
 
     public void InitGame()
     {
+        ResetStaticState();
+
         GameElements.SetActive(true);
 
         _initLevels();
 
-        TimeTimer = 0f;
-        isPaused = false;
         isGameStarted = true;
         isGameOver = false;
-        _highScoreAchieved = false;
 
         _nextFigures = new int[3];
         _nextFiguresObjects = new Transform[3];
@@ -139,21 +138,35 @@ public class Game : MonoBehaviour
 
     public void Restart()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(0);
+        ResetStaticState();
+        GridGenerator.ResetGrid();
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public IEnumerator GameOver()
     {
-        GridGenerator.DeleteAllBoxes();
+        if (isGameOver)
+            yield break;
+
         isGameOver = true;
+        isGameStarted = false;
+
+        if (GridGenerator.grid != null)
+            GridGenerator.DeleteAllBoxes();
 
         yield return new WaitForSeconds(2.5f);
 
         if (LeaderboardController.UpdateHighScore(Game._score))
-            inputScore.SetActive(true);
+        {
+            if (inputScore != null)
+                inputScore.SetActive(true);
+        }
         else
-            gameOverMenu.SetActive(true);      
+        {
+            if (gameOverMenu != null)
+                gameOverMenu.SetActive(true);
+        }
     }
 
     public void ExitGame()
@@ -257,7 +270,12 @@ public class Game : MonoBehaviour
         gameInstance.FourLinesParticleSystem.transform.position = new Vector3(currentPos.x, line, currentPos.z);
         gameInstance.FourLinesParticleSystem.Play();
 
-        GameObject.FindObjectOfType<PowerUpsMenu>().AddPowerUp(DragAndDropElement.PowerUpType.DeleteRow);
+        PowerUpsMenu menu = powerUpsMenu != null ? powerUpsMenu : FindFirstObjectByType<PowerUpsMenu>();
+
+        if (menu != null)
+            menu.AddPowerUp(DragAndDropElement.PowerUpType.DeleteRow);
+        else
+            Debug.LogWarning("[Game] PowerUpsMenu not found.");
 
         gameInstance.soundSystemInstance.PlayLines(SoundSystem.linesSounds.FourLines);
     }
@@ -271,7 +289,12 @@ public class Game : MonoBehaviour
         gameInstance.TwoLinesParticleSystem.transform.position = new Vector3(currentPos.x, line, currentPos.z);
         gameInstance.TwoLinesParticleSystem.Play();
 
-        GameObject.FindObjectOfType<PowerUpsMenu>().AddPowerUp(DragAndDropElement.PowerUpType.CompleteRow);
+        PowerUpsMenu menu = powerUpsMenu != null ? powerUpsMenu : FindFirstObjectByType<PowerUpsMenu>();
+
+        if (menu != null)
+            menu.AddPowerUp(DragAndDropElement.PowerUpType.CompleteRow);
+        else
+            Debug.LogWarning("[Game] PowerUpsMenu not found.");
 
         gameInstance.soundSystemInstance.PlayLines(SoundSystem.linesSounds.TwoLines);
     }
@@ -285,7 +308,12 @@ public class Game : MonoBehaviour
         gameInstance.ThreeLinesParticleSystem.transform.position = new Vector3(currentPos.x, line, currentPos.z);
         gameInstance.ThreeLinesParticleSystem.Play();
 
-        GameObject.FindObjectOfType<PowerUpsMenu>().AddPowerUp(DragAndDropElement.PowerUpType.DeleteColum);
+        PowerUpsMenu menu = powerUpsMenu != null ? powerUpsMenu : FindFirstObjectByType<PowerUpsMenu>();
+
+        if (menu != null)
+            menu.AddPowerUp(DragAndDropElement.PowerUpType.DeleteColum);
+        else
+            Debug.LogWarning("[Game] PowerUpsMenu not found.");
 
         gameInstance.soundSystemInstance.PlayLines(SoundSystem.linesSounds.ThreeLines);
     }
@@ -303,5 +331,24 @@ public class Game : MonoBehaviour
         // Backgound Animation
         Animator backgroundAnimator = GameObject.Find("LevelBack").GetComponentInChildren<Animator>();
         backgroundAnimator.SetTrigger("HighScore");
+    }
+
+    public static void ResetStaticState()
+    {
+        isPaused = false;
+        TimeTimer = 0f;
+        isGameStarted = false;
+        isGameOver = false;
+
+        currentFigure = null;
+
+        _score = 0;
+        _highScoreAchieved = false;
+
+        _level = 1;
+        _lines = 0;
+        _linesCounter = 0;
+
+        Time.timeScale = 1f;
     }
 }

@@ -58,34 +58,66 @@ public class LeaderboardController : MonoBehaviour
 
     void LoadLeaderboard()
     {
-        var reader = File.OpenText(Application.persistentDataPath + "/Leaderboard.json");
-        string json = "";
+        string path = Path.Combine(Application.persistentDataPath, "Leaderboard.json");
 
-        while (!reader.EndOfStream)
+        if (!File.Exists(path))
         {
-            json = reader.ReadLine();
-            // Do Something with the input. 
+            Debug.Log("[Leaderboard] No existing leaderboard found. Creating a new one.");
+            m_leaderboard = new Leaderboard();
+            SaveLeaderboard();
+            return;
         }
 
-        reader.Close();
+        string json = File.ReadAllText(path);
 
-        Debug.Log(json);
-        JsonUtility.FromJsonOverwrite(json, m_leaderboard);
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            Debug.LogWarning("[Leaderboard] Leaderboard file was empty. Resetting leaderboard.");
+            m_leaderboard = new Leaderboard();
+            SaveLeaderboard();
+            return;
+        }
+
+        try
+        {
+            JsonUtility.FromJsonOverwrite(json, m_leaderboard);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("[Leaderboard] Failed to load leaderboard: " + e.Message);
+            m_leaderboard = new Leaderboard();
+            SaveLeaderboard();
+        }
     }
 
     public void UpdateScoreUI()
     {
+        if (score_ui_element == null || viewport_content == null)
+        {
+            Debug.LogWarning("[Leaderboard] Missing score_ui_element or viewport_content reference.");
+            return;
+        }
+
+        for (int i = viewport_content.transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(viewport_content.transform.GetChild(i).gameObject);
+        }
+
+        if (m_leaderboard == null || m_leaderboard.m_leaderboard == null)
+            return;
+
         int index = 1;
+
         foreach (Score score in m_leaderboard.m_leaderboard)
         {
             var element = Instantiate(score_ui_element, viewport_content.transform);
+
             element.transform.GetChild(0).GetComponent<TMP_Text>().text = index.ToString();
             element.transform.GetChild(1).GetComponent<TMP_Text>().text = score.name;
             element.transform.GetChild(2).GetComponent<TMP_Text>().text = score.score.ToString();
 
             RankingCustomColor(element.transform.GetChild(0).GetComponent<TMP_Text>(), index);
             index++;
-
         }
     }
 
@@ -115,19 +147,29 @@ public class LeaderboardController : MonoBehaviour
 
     static public void SaveLeaderboard()
     {
+        if (m_leaderboard == null)
+            m_leaderboard = new Leaderboard();
+
+        if (m_leaderboard.m_leaderboard == null)
+            m_leaderboard.m_leaderboard = new List<Score>();
+
         m_leaderboard.m_leaderboard.Sort(SortByScore);
         m_leaderboard.m_leaderboard.Reverse();
 
         string data = JsonUtility.ToJson(m_leaderboard);
-        File.WriteAllText(Application.persistentDataPath + "/Leaderboard.json", data);
+        string path = Path.Combine(Application.persistentDataPath, "Leaderboard.json");
+
+        File.WriteAllText(path, data);
     }
 
     static public void ClearLeaderboard()
     {
-        Leaderboard newLeaderboard = new Leaderboard();
+        m_leaderboard = new Leaderboard();
 
-        string data = JsonUtility.ToJson(newLeaderboard);
-        File.WriteAllText(Application.persistentDataPath + "/Leaderboard.json", data);
+        string data = JsonUtility.ToJson(m_leaderboard);
+        string path = Path.Combine(Application.persistentDataPath, "Leaderboard.json");
+
+        File.WriteAllText(path, data);
     }
 
     static public bool UpdateHighScore(int newScore)
