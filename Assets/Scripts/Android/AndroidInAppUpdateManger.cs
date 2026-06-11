@@ -11,19 +11,33 @@ public class AndroidInAppUpdateManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private bool checkOnStart = true;
 
-    [Tooltip("Si está activado, fuerza actualización inmediata cuando Google Play lo permita.")]
+    [Tooltip("Si está activo, intenta usar actualización inmediata cuando Google Play lo permita.")]
     [SerializeField] private bool useImmediateUpdate = false;
 
 #if UNITY_ANDROID && !UNITY_EDITOR
     private AppUpdateManager appUpdateManager;
 #endif
 
+    private static AndroidInAppUpdateManager instance;
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     private void Start()
     {
-        DontDestroyOnLoad(gameObject);
-
         if (checkOnStart)
+        {
             CheckForUpdate();
+        }
     }
 
     public void CheckForUpdate()
@@ -31,7 +45,7 @@ public class AndroidInAppUpdateManager : MonoBehaviour
 #if UNITY_ANDROID && !UNITY_EDITOR
         StartCoroutine(CheckForUpdateRoutine());
 #else
-        Debug.Log("[InAppUpdate] Solo funciona en Android real instalado desde Google Play.");
+        Debug.Log("[InAppUpdate] Skipped. Only works on Android device installed from Google Play.");
 #endif
     }
 
@@ -40,98 +54,120 @@ public class AndroidInAppUpdateManager : MonoBehaviour
     {
         appUpdateManager = new AppUpdateManager();
 
-        var appUpdateInfoOperation = appUpdateManager.GetAppUpdateInfo();
+        PlayAsyncOperation<AppUpdateInfo, AppUpdateErrorCode> appUpdateInfoOperation =
+            appUpdateManager.GetAppUpdateInfo();
 
         yield return appUpdateInfoOperation;
 
         if (!appUpdateInfoOperation.IsSuccessful)
         {
-            Debug.LogWarning("[InAppUpdate] Error al obtener update info: " + appUpdateInfoOperation.Error);
+            Debug.LogWarning("[InAppUpdate] Failed to get update info: " + appUpdateInfoOperation.Error);
             yield break;
         }
 
         AppUpdateInfo appUpdateInfo = appUpdateInfoOperation.GetResult();
 
-        if (appUpdateInfo.UpdateAvailability != UpdateAvailability.UpdateAvailable)
+        if (appUpdateInfo == null)
         {
-            Debug.Log("[InAppUpdate] No hay actualización disponible.");
+            Debug.LogWarning("[InAppUpdate] AppUpdateInfo is null.");
             yield break;
         }
 
-        Debug.Log("[InAppUpdate] Hay actualización disponible. VersionCode: " + appUpdateInfo.AvailableVersionCode);
+        if (appUpdateInfo.UpdateAvailability != UpdateAvailability.UpdateAvailable)
+        {
+            Debug.Log("[InAppUpdate] No update available.");
+            yield break;
+        }
 
-        if (useImmediateUpdate && appUpdateInfo.IsUpdateTypeAllowed(AppUpdateType.Immediate))
+        Debug.Log("[InAppUpdate] Update available. VersionCode: " + appUpdateInfo.AvailableVersionCode);
+
+        AppUpdateOptions immediateOptions = AppUpdateOptions.ImmediateAppUpdateOptions();
+        AppUpdateOptions flexibleOptions = AppUpdateOptions.FlexibleAppUpdateOptions();
+
+        bool immediateAllowed = appUpdateInfo.IsUpdateTypeAllowed(immediateOptions);
+        bool flexibleAllowed = appUpdateInfo.IsUpdateTypeAllowed(flexibleOptions);
+
+        if (useImmediateUpdate && immediateAllowed)
         {
-            yield return StartImmediateUpdate(appUpdateInfo);
+            yield return StartImmediateUpdate(appUpdateInfo, immediateOptions);
         }
-        else if (appUpdateInfo.IsUpdateTypeAllowed(AppUpdateType.Flexible))
+        else if (flexibleAllowed)
         {
-            yield return StartFlexibleUpdate(appUpdateInfo);
+            yield return StartFlexibleUpdate(appUpdateInfo, flexibleOptions);
         }
-        else if (appUpdateInfo.IsUpdateTypeAllowed(AppUpdateType.Immediate))
+        else if (immediateAllowed)
         {
-            yield return StartImmediateUpdate(appUpdateInfo);
+            yield return StartImmediateUpdate(appUpdateInfo, immediateOptions);
         }
         else
         {
-            Debug.LogWarning("[InAppUpdate] Hay update, pero Google Play no permite iniciar ningún flujo.");
+            Debug.LogWarning("[InAppUpdate] Update available, but no update flow is allowed.");
         }
     }
 
-    private IEnumerator StartFlexibleUpdate(AppUpdateInfo appUpdateInfo)
+    private IEnumerator StartFlexibleUpdate(AppUpdateInfo appUpdateInfo, AppUpdateOptions appUpdateOptions)
     {
-        Debug.Log("[InAppUpdate] Iniciando actualización flexible.");
+        Debug.Log("[InAppUpdate] Starting flexible update.");
 
-        var options = AppUpdateOptions.FlexibleAppUpdateOptions();
-        var startUpdateRequest = appUpdateManager.StartUpdate(appUpdateInfo, options);
+        AppUpdateRequest startUpdateRequest = appUpdateManager.StartUpdate(appUpdateInfo, appUpdateOptions);
 
-        yield return startUpdateRequest;
-
-        if (!startUpdateRequest.IsSuccessful)
+        while (!startUpdateRequest.IsDone)
         {
-            Debug.LogWarning("[InAppUpdate] Falló update flexible: " + startUpdateRequest.Error);
-            yield break;
-        }
-
-        AppUpdateRequest updateRequest = startUpdateRequest.GetResult();
-
-        while (!updateRequest.IsDone)
-        {
-            if (updateRequest.Status == AppUpdateStatus.Downloaded)
+            if (startUpdateRequest.Status == AppUpdateStatus.Downloaded)
             {
-                Debug.Log("[InAppUpdate] Update descargado. Completando instalación.");
-                appUpdateManager.CompleteUpdate();
+                Debug.Log("[InAppUpdate] Flexible update downloaded. Completing update.");
+                yield return CompleteFlexibleUpdate();
                 yield break;
             }
 
-            if (updateRequest.Error != AppUpdateErrorCode.NoError)
+            if (startUpdateRequest.Error != AppUpdateErrorCode.NoError)
             {
-                Debug.LogWarning("[InAppUpdate] Error durante descarga: " + updateRequest.Error);
+                Debug.LogWarning("[InAppUpdate] Flexible update error: " + startUpdateRequest.Error);
                 yield break;
             }
 
             yield return null;
         }
 
-        if (updateRequest.Status == AppUpdateStatus.Downloaded)
+        if (startUpdateRequest.Status == AppUpdateStatus.Downloaded)
         {
-            Debug.Log("[InAppUpdate] Update descargado. Completando instalación.");
-            appUpdateManager.CompleteUpdate();
+            Debug.Log("[InAppUpdate] Flexible update downloaded after request finished. Completing update.");
+            yield return CompleteFlexibleUpdate();
+        }
+        else if (startUpdateRequest.Error != AppUpdateErrorCode.NoError)
+        {
+            Debug.LogWarning("[InAppUpdate] Flexible update finished with error: " + startUpdateRequest.Error);
+        }
+        else
+        {
+            Debug.Log("[InAppUpdate] Flexible update flow finished. Status: " + startUpdateRequest.Status);
         }
     }
 
-    private IEnumerator StartImmediateUpdate(AppUpdateInfo appUpdateInfo)
+    private IEnumerator CompleteFlexibleUpdate()
     {
-        Debug.Log("[InAppUpdate] Iniciando actualización inmediata.");
+        PlayAsyncOperation<VoidResult, AppUpdateErrorCode> completeUpdateOperation =
+            appUpdateManager.CompleteUpdate();
 
-        var options = AppUpdateOptions.ImmediateAppUpdateOptions();
-        var startUpdateRequest = appUpdateManager.StartUpdate(appUpdateInfo, options);
+        yield return completeUpdateOperation;
+
+        if (!completeUpdateOperation.IsSuccessful)
+        {
+            Debug.LogWarning("[InAppUpdate] CompleteUpdate failed: " + completeUpdateOperation.Error);
+        }
+    }
+
+    private IEnumerator StartImmediateUpdate(AppUpdateInfo appUpdateInfo, AppUpdateOptions appUpdateOptions)
+    {
+        Debug.Log("[InAppUpdate] Starting immediate update.");
+
+        AppUpdateRequest startUpdateRequest = appUpdateManager.StartUpdate(appUpdateInfo, appUpdateOptions);
 
         yield return startUpdateRequest;
 
-        if (!startUpdateRequest.IsSuccessful)
+        if (startUpdateRequest.Error != AppUpdateErrorCode.NoError)
         {
-            Debug.LogWarning("[InAppUpdate] Falló update inmediato: " + startUpdateRequest.Error);
+            Debug.LogWarning("[InAppUpdate] Immediate update error: " + startUpdateRequest.Error);
         }
     }
 #endif
