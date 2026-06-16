@@ -164,4 +164,22 @@ public class PlayerLevelManager : MonoBehaviour
         NotifyXpChanged();
     }
 #endif
+
+    public void DebugResetProgression()
+    {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        PlayerPrefs.DeleteKey(SaveKeyLevel);
+        PlayerPrefs.DeleteKey(SaveKeyTotalXp);
+        PlayerPrefs.DeleteKey(SaveKeyAvailableXp);
+
+        Level = 1;
+        TotalLifetimeXp = 0;
+        AvailableXp = 0;
+
+        Save();
+        NotifyXpChanged();
+
+        Debug.Log("[Debug] Player progression reset.");
+#endif
+    }
 }

@@ -75,6 +75,12 @@ public class LevelRewardManager : MonoBehaviour
         return best;
     }
 
+    public void DebugGrantReward(LevelRewardDefinition reward)
+    {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        GrantReward(reward);
+#endif
+    }
     private void GrantReward(LevelRewardDefinition reward)
     {
         string claimKey = GetClaimKey(reward);
@@ -153,4 +159,14 @@ public class LevelRewardManager : MonoBehaviour
         claimedRewards.Clear();
     }
 #endif
+
+    public void DebugResetClaimedRewards()
+    {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        PlayerPrefs.DeleteKey(SaveKey);
+        claimedRewards.Clear();
+
+        Debug.Log("[Debug] Claimed level rewards reset.");
+#endif
+    }
 }

@@ -6,6 +6,7 @@ public class PowerUpUnlockManager : MonoBehaviour
     public static PowerUpUnlockManager I { get; private set; }
 
     [SerializeField] private List<PowerUpDefinition> powerUps = new();
+    public IReadOnlyList<PowerUpDefinition> PowerUps => powerUps;
 
     private readonly HashSet<string> unlockedPowerUps = new();
 
@@ -89,4 +90,14 @@ public class PowerUpUnlockManager : MonoBehaviour
         unlockedPowerUps.Clear();
     }
 #endif
+
+    public void DebugResetPowerUps()
+    {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        PlayerPrefs.DeleteKey(SaveKey);
+        unlockedPowerUps.Clear();
+
+        Debug.Log("[Debug] Power-ups reset.");
+#endif
+    }
 }

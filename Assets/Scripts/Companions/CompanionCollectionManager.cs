@@ -218,4 +218,16 @@ public class CompanionCollectionManager : MonoBehaviour
         saveData.Clear();
     }
 #endif
+
+    public void DebugResetCompanions()
+    {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        PlayerPrefs.DeleteKey(SaveKey);
+        saveData.Clear();
+
+        Save();
+
+        Debug.Log("[Debug] Companions reset.");
+#endif
+    }
 }
