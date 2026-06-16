@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70473997fe6fee24c958a9cbd07c7c6e, type: 3}
+  m_Name: PowerUp_ClearColumn
+  m_EditorClassIdentifier: Assembly-CSharp::PowerUpDefinition
+  id: powerup_clear_column
+  displayName: Eliminar columna
+  type: 2
+  description: Elimina una columna completa del tablero.
+  localIcon: {fileID: -8766760300750425805, guid: d5c030323b209d44d8d4033cb1ebec2c, type: 3}
+  iconAddressKey: 
+  vfxAddressKey: 
