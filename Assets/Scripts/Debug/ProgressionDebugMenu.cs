@@ -25,7 +25,9 @@ public class ProgressionDebugMenu : MonoBehaviour
     [SerializeField] private Button resetPlayerLevelButton;
     [SerializeField] private Button resetCompanionsButton;
     [SerializeField] private Button resetPowerUpsButton;
+    [SerializeField] private Button resetRoundButton;
     [SerializeField] private Button resetAllButton;
+
 
     private void Awake()
     {
@@ -81,6 +83,9 @@ public class ProgressionDebugMenu : MonoBehaviour
 
         if (resetPowerUpsButton != null)
             resetPowerUpsButton.onClick.AddListener(ResetPowerUps);
+
+        if (resetRoundButton != null)
+            resetRoundButton.onClick.AddListener(ResetRound);
 
         if (resetAllButton != null)
             resetAllButton.onClick.AddListener(ResetAll);
@@ -180,10 +185,18 @@ public class ProgressionDebugMenu : MonoBehaviour
     private void ResetAll()
     {
         PlayerLevelManager.I?.DebugResetProgression();
+        RoundFlowManager.I?.DebugResetRounds();
+
         CompanionCollectionManager.I?.DebugResetCompanions();
         PowerUpUnlockManager.I?.DebugResetPowerUps();
         LevelRewardManager.I?.DebugResetClaimedRewards();
 
+        RefreshInfo();
+    }
+
+    private void ResetRound()
+    {
+        RoundFlowManager.I?.DebugResetRounds();
         RefreshInfo();
     }
 
@@ -198,10 +211,21 @@ public class ProgressionDebugMenu : MonoBehaviour
             return;
         }
 
+        string roundInfo = "RoundFlowManager not found.";
+
+        if (RoundFlowManager.I != null)
+        {
+            roundInfo =
+                $"Round: {RoundFlowManager.I.CurrentRound}\n" +
+                $"Round XP: {RoundFlowManager.I.CurrentRoundXp} / {RoundFlowManager.I.RequiredRoundXp}\n" +
+                $"Round State: {RoundFlowManager.I.State}";
+        }
+
         infoText.text =
-            $"Level: {PlayerLevelManager.I.Level}\n" +
-            $"XP: {PlayerLevelManager.I.GetCurrentXpInLevel()} / {PlayerLevelManager.I.GetXpRequiredForNextLevel()}\n" +
+            $"Player Level: {PlayerLevelManager.I.Level}\n" +
+            $"Player XP: {PlayerLevelManager.I.GetCurrentXpInLevel()} / {PlayerLevelManager.I.GetXpRequiredForNextLevel()}\n" +
             $"Total XP: {PlayerLevelManager.I.TotalLifetimeXp}\n" +
-            $"Available XP: {PlayerLevelManager.I.AvailableXp}";
+            $"Available XP: {PlayerLevelManager.I.AvailableXp}\n\n" +
+            roundInfo;
     }
 }

@@ -48588,7 +48588,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1514792534
 RectTransform:
   m_ObjectHideFlags: 0
@@ -48606,8 +48606,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 9.398, y: -12.501354}
-  m_SizeDelta: {x: 6.965, y: 4.921}
+  m_AnchoredPosition: {x: -11.595, y: 0.73099995}
+  m_SizeDelta: {x: 13.019, y: 3.447}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1514792535
 MonoBehaviour:
@@ -48629,7 +48629,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Level: \n<size=130%>1"
+  m_text: 'Level: <size=130%>1'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 69275a2c35d6e58408dd9a7605653f83, type: 2}
   m_sharedMaterial: {fileID: -3388255813167158118, guid: 69275a2c35d6e58408dd9a7605653f83, type: 2}
@@ -48656,7 +48656,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1.4
+  m_fontSize: 1.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

@@ -199,11 +199,35 @@ public class RoundFlowManager : MonoBehaviour
     }
 
     [ContextMenu("Debug Reset Rounds")]
-    private void DebugResetRounds()
+    public void DebugResetRounds()
     {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         PlayerPrefs.DeleteKey(SaveKeyRound);
+
         CurrentRound = 1;
-        StartRound();
+        CurrentRoundXp = 0;
+        RequiredRoundXp = GetRequiredXpForRound(CurrentRound);
+
+        State = RoundState.Playing;
+
+        Game.isPaused = false;
+        Time.timeScale = 1f;
+
+        if (GridGenerator.grid != null)
+            GridGenerator.DeleteAllBoxes();
+
+        Game._score = 0;
+        Game._lines = 0;
+        Game._linesCounter = 0;
+        Game._level = 1;
+
+        OnRoundStarted?.Invoke(CurrentRound);
+        OnRoundXpChanged?.Invoke(CurrentRoundXp, RequiredRoundXp);
+
+        Debug.Log("[Debug] Rounds reset.");
+#endif
     }
 #endif
+
+
 }
