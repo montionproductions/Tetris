@@ -83,32 +83,22 @@ public class UIController : MonoBehaviour
 
         GiveRealtimeXp(line);
 
-        if (LeaderboardController.UpdateHighScore(Game._score))
-        {
-            if (gameController != null)
-                gameController.OnNewHighScoreWrote();
-
-            Game._highScore = Game._score;
-        }
-
         UpdateLines();
         UpdateScore();
     }
 
     private void GiveRealtimeXp(int line)
     {
-        int xp = xpPerLine * Mathf.Max(1, line);
+        int xp = 25 * Mathf.Max(1, line);
 
-        // Bonus usando el contador actual de líneas consecutivas.
-        // GridGenerator incrementa Game._linesCounter antes de evaluar los premios.
         if (Game._linesCounter == 2)
-            xp += xpTwoLinesBonus;
+            xp += 20;
         else if (Game._linesCounter == 3)
-            xp += xpThreeLinesBonus;
+            xp += 45;
         else if (Game._linesCounter >= 4)
-            xp += xpFourLinesBonus;
+            xp += 80;
 
-        PlayerLevelManager.I?.AddXp(xp);
+        RoundFlowManager.I?.AddRoundXp(xp);
     }
 
     private void UpdateTime()
@@ -122,4 +112,5 @@ public class UIController : MonoBehaviour
 
         TimeText.text = "Time:\n<size=130%>" + timeConverted;
     }
+
 }

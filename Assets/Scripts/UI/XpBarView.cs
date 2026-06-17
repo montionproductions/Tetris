@@ -7,35 +7,32 @@ public class XpBarView : MonoBehaviour
     [SerializeField] private Image nextRewardIcon;
     [SerializeField] private Animator animator;
 
-    private int lastLevel = 1;
-
     private void OnEnable()
     {
-        if (PlayerLevelManager.I != null)
+        if (RoundFlowManager.I != null)
         {
-            PlayerLevelManager.I.OnXpChanged += Refresh;
-            PlayerLevelManager.I.OnLevelUp += HandleLevelUp;
-
-            lastLevel = PlayerLevelManager.I.Level;
+            RoundFlowManager.I.OnRoundXpChanged += Refresh;
+            RoundFlowManager.I.OnRoundCompleted += HandleRoundCompleted;
 
             Refresh(
-                PlayerLevelManager.I.GetCurrentXpInLevel(),
-                PlayerLevelManager.I.GetXpRequiredForNextLevel(),
-                PlayerLevelManager.I.Level
+                RoundFlowManager.I.CurrentRoundXp,
+                RoundFlowManager.I.RequiredRoundXp
             );
         }
+
+        RefreshNextRewardIcon();
     }
 
     private void OnDisable()
     {
-        if (PlayerLevelManager.I != null)
+        if (RoundFlowManager.I != null)
         {
-            PlayerLevelManager.I.OnXpChanged -= Refresh;
-            PlayerLevelManager.I.OnLevelUp -= HandleLevelUp;
+            RoundFlowManager.I.OnRoundXpChanged -= Refresh;
+            RoundFlowManager.I.OnRoundCompleted -= HandleRoundCompleted;
         }
     }
 
-    private void Refresh(int currentXp, int requiredXp, int level)
+    private void Refresh(int currentXp, int requiredXp)
     {
         if (xpSlider != null)
         {
@@ -43,18 +40,19 @@ public class XpBarView : MonoBehaviour
             xpSlider.value = Mathf.Clamp(currentXp, 0, requiredXp);
         }
 
-        RefreshNextRewardIcon(level);
+        RefreshNextRewardIcon();
     }
 
-    private void RefreshNextRewardIcon(int level)
+    private void RefreshNextRewardIcon()
     {
         if (nextRewardIcon == null)
             return;
 
-        if (LevelRewardManager.I == null)
+        if (LevelRewardManager.I == null || PlayerLevelManager.I == null)
             return;
 
-        LevelRewardDefinition nextReward = LevelRewardManager.I.GetNextReward(level);
+        LevelRewardDefinition nextReward =
+            LevelRewardManager.I.GetNextReward(PlayerLevelManager.I.Level);
 
         if (nextReward == null || nextReward.localPreview == null)
         {
@@ -66,11 +64,9 @@ public class XpBarView : MonoBehaviour
         nextRewardIcon.sprite = nextReward.localPreview;
     }
 
-    private void HandleLevelUp(int newLevel)
+    private void HandleRoundCompleted(int round)
     {
-        lastLevel = newLevel;
-
         if (animator != null)
-            animator.SetTrigger("LevelUp");
+            animator.SetTrigger("Complete");
     }
 }

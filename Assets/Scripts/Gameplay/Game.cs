@@ -157,16 +157,11 @@ public class Game : MonoBehaviour
 
         yield return new WaitForSeconds(2.5f);
 
-        if (LeaderboardController.UpdateHighScore(Game._score))
-        {
-            if (inputScore != null)
-                inputScore.SetActive(true);
-        }
-        else
-        {
-            if (gameOverMenu != null)
-                gameOverMenu.SetActive(true);
-        }
+        if (inputScore != null)
+            inputScore.SetActive(false);
+
+        if (gameOverMenu != null)
+            gameOverMenu.SetActive(true);
     }
 
     public void ExitGame()

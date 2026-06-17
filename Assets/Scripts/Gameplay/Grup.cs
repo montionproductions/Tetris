@@ -236,7 +236,8 @@ public class Grup : MonoBehaviour
 
                 DestroyHardFallTrails();
 
-                ShakeCamera.ActivateShake();
+                if (!Game.isPaused && Time.timeScale > 0f)
+                    ShakeCamera.ActivateShake();
 
                 // Disable script
                 enabled = false;
