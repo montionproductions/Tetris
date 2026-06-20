@@ -17,5 +17,5 @@ MonoBehaviour:
   rewardId: powerup_clear_row
   title: Nuevo power-up
   description: "Elimina una l\xEDnea completa del tablero."
-  localPreview: {fileID: 0}
+  localPreview: {fileID: -7455115009089462100, guid: d5c030323b209d44d8d4033cb1ebec2c, type: 3}
   previewAddressKey: 

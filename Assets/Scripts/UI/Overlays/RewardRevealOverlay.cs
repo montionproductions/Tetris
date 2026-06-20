@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -12,22 +13,48 @@ public class RewardRevealOverlay : MonoBehaviour
     [SerializeField] private TMP_Text descriptionText;
     [SerializeField] private Button continueButton;
 
+    private Action onContinue;
+
     private void Awake()
     {
         I = this;
 
         if (continueButton != null)
-            continueButton.onClick.AddListener(Hide);
+        {
+            continueButton.onClick.RemoveAllListeners();
+            continueButton.onClick.AddListener(Continue);
+        }
 
         Hide();
     }
 
-    public void Show(LevelRewardDefinition reward)
+    public void Show(LevelRewardDefinition reward, Action continueCallback = null)
     {
-        if (reward == null) return;
+        if (reward == null)
+        {
+            Debug.LogWarning("[RewardRevealOverlay] Tried to show null reward.");
+            continueCallback?.Invoke();
+            return;
+        }
 
-        root.SetActive(true);
+        Debug.Log($"[RewardRevealOverlay] Show reward: {reward.title} / {reward.rewardId} / {reward.rewardType}");
 
+        onContinue = continueCallback;
+
+        // Limpia contenido viejo primero
+        if (titleText != null)
+            titleText.text = "";
+
+        if (descriptionText != null)
+            descriptionText.text = "";
+
+        if (previewImage != null)
+        {
+            previewImage.sprite = null;
+            previewImage.enabled = false;
+        }
+
+        // Pinta contenido nuevo
         if (titleText != null)
             titleText.text = reward.title;
 
@@ -40,12 +67,27 @@ public class RewardRevealOverlay : MonoBehaviour
             previewImage.enabled = reward.localPreview != null;
         }
 
-        // Después aquí metemos animación premium.
+        if (root != null)
+            root.SetActive(true);
+        else
+            gameObject.SetActive(true);
+    }
+
+    private void Continue()
+    {
+        Hide();
+
+        Action callback = onContinue;
+        onContinue = null;
+
+        callback?.Invoke();
     }
 
     public void Hide()
     {
         if (root != null)
             root.SetActive(false);
+        else
+            gameObject.SetActive(false);
     }
 }

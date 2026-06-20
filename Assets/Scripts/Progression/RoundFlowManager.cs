@@ -110,13 +110,45 @@ public class RoundFlowManager : MonoBehaviour
             RoundCompleteOverlay.I.Show(
                 CurrentRound,
                 GetCoinsForCompletedRound(),
-                ContinueToUpgradePhase
+                ContinueToRewardRevealPhase
             );
         }
         else
         {
-            ContinueToUpgradePhase();
+            ContinueToRewardRevealPhase();
         }
+    }
+
+    private void ContinueToRewardRevealPhase()
+    {
+        Debug.Log("[RoundFlow] ContinueToRewardRevealPhase");
+
+        if (LevelRewardManager.I == null)
+        {
+            Debug.LogWarning("[RoundFlow] LevelRewardManager.I is NULL. Going to upgrade phase.");
+            ContinueToUpgradePhase();
+            return;
+        }
+
+        LevelRewardDefinition reward = LevelRewardManager.I.LastGrantedReward;
+
+        if (reward == null)
+        {
+            Debug.LogWarning("[RoundFlow] LastGrantedReward is NULL. Going to upgrade phase.");
+            ContinueToUpgradePhase();
+            return;
+        }
+
+        Debug.Log($"[RoundFlow] Reward found: {reward.title} / {reward.rewardId}");
+
+        if (RewardRevealOverlay.I == null)
+        {
+            Debug.LogError("[RoundFlow] RewardRevealOverlay.I is NULL. Check that the RewardRevealOverlay GameObject is active in the scene.");
+            ContinueToUpgradePhase();
+            return;
+        }
+
+        RewardRevealOverlay.I.Show(reward, ContinueToUpgradePhase);
     }
 
     public void ContinueToUpgradePhase()

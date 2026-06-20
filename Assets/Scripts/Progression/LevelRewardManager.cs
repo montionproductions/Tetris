@@ -11,6 +11,8 @@ public class LevelRewardManager : MonoBehaviour
 
     private const string SaveKey = "cbh_claimed_level_rewards";
 
+    public LevelRewardDefinition LastGrantedReward { get; private set; }
+
     private void Awake()
     {
         if (I != null && I != this)
@@ -24,21 +26,48 @@ public class LevelRewardManager : MonoBehaviour
         Load();
     }
 
+    private bool subscribedToLevelManager;
+
+    private void Start()
+    {
+        TrySubscribeToPlayerLevelManager();
+    }
+
     private void OnEnable()
     {
-        if (PlayerLevelManager.I != null)
-            PlayerLevelManager.I.OnLevelUp += HandleLevelUp;
+        TrySubscribeToPlayerLevelManager();
     }
 
     private void OnDisable()
     {
-        if (PlayerLevelManager.I != null)
+        if (PlayerLevelManager.I != null && subscribedToLevelManager)
+        {
             PlayerLevelManager.I.OnLevelUp -= HandleLevelUp;
+            subscribedToLevelManager = false;
+        }
+    }
+
+    private void TrySubscribeToPlayerLevelManager()
+    {
+        if (subscribedToLevelManager)
+            return;
+
+        if (PlayerLevelManager.I == null)
+            return;
+
+        PlayerLevelManager.I.OnLevelUp += HandleLevelUp;
+        subscribedToLevelManager = true;
+
+        Debug.Log("[LevelReward] Subscribed to PlayerLevelManager.");
     }
 
     private void HandleLevelUp(int newLevel)
     {
+        Debug.Log($"[LevelReward] HandleLevelUp: {newLevel}");
+
         List<LevelRewardDefinition> rewardsForLevel = GetRewardsForLevel(newLevel);
+
+        Debug.Log($"[LevelReward] Rewards found for level {newLevel}: {rewardsForLevel.Count}");
 
         foreach (LevelRewardDefinition reward in rewardsForLevel)
         {
@@ -116,9 +145,14 @@ public class LevelRewardManager : MonoBehaviour
         claimedRewards.Add(claimKey);
         Save();
 
-        if (granted && RewardRevealOverlay.I != null)
+        if (granted)
         {
-            RewardRevealOverlay.I.Show(reward);
+            LastGrantedReward = reward;
+            Debug.Log($"[LevelReward] LastGrantedReward set: {reward.title} / {reward.rewardId}");
+        }
+        else
+        {
+            Debug.LogWarning($"[LevelReward] Reward was not granted: {reward.title} / {reward.rewardId}");
         }
     }
 
