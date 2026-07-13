@@ -8,6 +8,18 @@ public class XpBarView : MonoBehaviour
     [SerializeField] private Image nextRewardIcon;
     [SerializeField] private Animator animator;
 
+    [Header("Line Point Sparks")]
+    [SerializeField, Min(1)] private int sparkCount = 7;
+    [SerializeField] private Vector2 sparkSize = new Vector2(14f, 14f);
+    [SerializeField] private Color sparkColor = new Color(1f, .85f, .15f, 1f);
+    [SerializeField, Min(0f)] private float spawnSpread = 35f;
+    [SerializeField, Min(0f)] private float spawnDelayStep = .055f;
+    [SerializeField, Min(.01f)] private float flightDuration = .48f;
+    [SerializeField] private float arcHeight = 90f;
+    [SerializeField, Min(0f)] private float startScale = 1f;
+    [SerializeField, Min(0f)] private float endScale = .25f;
+    [SerializeField, Min(0f)] private float completionDelay = .72f;
+
     private void OnEnable()
     {
         GridGenerator.OnLineCompleted += PlayPointsFlight;
@@ -94,20 +106,20 @@ public class XpBarView : MonoBehaviour
         Vector2 targetScreen = RectTransformUtility.WorldToScreenPoint(uiCamera, target.position);
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, targetScreen, uiCamera, out Vector2 end);
 
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < sparkCount; i++)
         {
             GameObject spark = new GameObject("LinePointSpark", typeof(RectTransform), typeof(Image));
             spark.transform.SetParent(canvas.transform, false);
             RectTransform sparkRect = spark.transform as RectTransform;
-            sparkRect.sizeDelta = new Vector2(26f, 26f);
-            sparkRect.anchoredPosition = start + Random.insideUnitCircle * 35f;
+            sparkRect.sizeDelta = sparkSize;
+            sparkRect.anchoredPosition = start + Random.insideUnitCircle * spawnSpread;
             Image image = spark.GetComponent<Image>();
-            image.color = new Color(1f, .85f, .15f, 1f);
+            image.color = sparkColor;
             image.raycastTarget = false;
-            StartCoroutine(FlySpark(sparkRect, end, i * .055f));
+            StartCoroutine(FlySpark(sparkRect, end, i * spawnDelayStep));
         }
 
-        yield return new WaitForSecondsRealtime(.72f);
+        yield return new WaitForSecondsRealtime(completionDelay);
         if (animator != null)
             animator.SetTrigger("Complete");
         StartCoroutine(PulseBar());
@@ -117,13 +129,12 @@ public class XpBarView : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(delay);
         Vector2 origin = spark.anchoredPosition;
-        float duration = .48f;
-        for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
+        for (float elapsed = 0f; elapsed < flightDuration; elapsed += Time.unscaledDeltaTime)
         {
-            float t = Mathf.SmoothStep(0f, 1f, elapsed / duration);
-            Vector2 arc = Vector2.up * Mathf.Sin(t * Mathf.PI) * 90f;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / flightDuration);
+            Vector2 arc = Vector2.up * Mathf.Sin(t * Mathf.PI) * arcHeight;
             spark.anchoredPosition = Vector2.Lerp(origin, target, t) + arc;
-            spark.localScale = Vector3.one * Mathf.Lerp(1.2f, .35f, t);
+            spark.localScale = Vector3.one * Mathf.Lerp(startScale, endScale, t);
             yield return null;
         }
         Destroy(spark.gameObject);

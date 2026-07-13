@@ -160,13 +160,13 @@ TextureImporter:
       name: menu1
       rect:
         serializedVersion: 2
-        x: 40
-        y: 1380
-        width: 464
-        height: 504
+        x: 59
+        y: 1348
+        width: 438
+        height: 499
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 74, y: 81, z: 64, w: 220}
+      border: {x: 68, y: 66, z: 62, w: 150}
       customData: 
       outline: []
       physicsShape: []
@@ -182,13 +182,13 @@ TextureImporter:
       name: menu2
       rect:
         serializedVersion: 2
-        x: 576
-        y: 1380
-        width: 464
-        height: 504
+        x: 582
+        y: 1347
+        width: 436
+        height: 497
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 69, y: 70, z: 66, w: 98}
+      border: {x: 60, y: 58, z: 59, w: 85}
       customData: 
       outline: []
       physicsShape: []
@@ -204,13 +204,13 @@ TextureImporter:
       name: box_bg
       rect:
         serializedVersion: 2
-        x: 52
-        y: 1241
-        width: 102
-        height: 103
+        x: 61
+        y: 1185
+        width: 104
+        height: 107
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 25, y: 25, z: 25, w: 25}
+      border: {x: 18, y: 21, z: 22, w: 19}
       customData: 
       outline: []
       physicsShape: []
@@ -226,13 +226,13 @@ TextureImporter:
       name: box_selected
       rect:
         serializedVersion: 2
-        x: 207
-        y: 1241
-        width: 104
-        height: 104
+        x: 208
+        y: 1182
+        width: 116
+        height: 112
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 25, y: 25, z: 25, w: 25}
+      border: {x: 16, y: 17, z: 17, w: 17}
       customData: 
       outline: []
       physicsShape: []
@@ -248,13 +248,13 @@ TextureImporter:
       name: box
       rect:
         serializedVersion: 2
-        x: 355
-        y: 1240
-        width: 104
-        height: 105
+        x: 362
+        y: 1186
+        width: 101
+        height: 106
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 25, y: 25, z: 25, w: 25}
+      border: {x: 16, y: 17, z: 19, w: 16}
       customData: 
       outline: []
       physicsShape: []
@@ -270,13 +270,13 @@ TextureImporter:
       name: button_inactive
       rect:
         serializedVersion: 2
-        x: 501
-        y: 1236
-        width: 227
-        height: 124
+        x: 505
+        y: 1186
+        width: 221
+        height: 113
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 21, y: 33, z: 21, w: 21}
+      border: {x: 21, y: 20, z: 17, w: 20}
       customData: 
       outline: []
       physicsShape: []
@@ -292,13 +292,13 @@ TextureImporter:
       name: button_active
       rect:
         serializedVersion: 2
-        x: 761
-        y: 1244
-        width: 227
-        height: 114
+        x: 763
+        y: 1187
+        width: 225
+        height: 111
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 25, y: 25, z: 25, w: 25}
+      border: {x: 20, y: 16, z: 19, w: 18}
       customData: 
       outline: []
       physicsShape: []
