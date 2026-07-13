@@ -191,6 +191,7 @@ public class LevelRewardManager : MonoBehaviour
     {
         PlayerPrefs.DeleteKey(SaveKey);
         claimedRewards.Clear();
+        LastGrantedReward = null;
     }
 #endif
 
@@ -199,6 +200,7 @@ public class LevelRewardManager : MonoBehaviour
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         PlayerPrefs.DeleteKey(SaveKey);
         claimedRewards.Clear();
+        LastGrantedReward = null;
 
         Debug.Log("[Debug] Claimed level rewards reset.");
 #endif

@@ -190,6 +190,8 @@ public class ProgressionDebugMenu : MonoBehaviour
         CompanionCollectionManager.I?.DebugResetCompanions();
         PowerUpUnlockManager.I?.DebugResetPowerUps();
         LevelRewardManager.I?.DebugResetClaimedRewards();
+        SoftCurrencyManager.I?.DebugResetCurrency();
+        TutorialManager.I?.DebugResetTutorial();
 
         RefreshInfo();
     }

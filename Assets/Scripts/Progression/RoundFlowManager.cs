@@ -187,9 +187,15 @@ public class RoundFlowManager : MonoBehaviour
         Game.isPaused = false;
         Time.timeScale = 1f;
 
-        // Aquí puedes resetear tablero o iniciar una nueva partida.
+        // AquÃ­ puedes resetear tablero o iniciar una nueva partida.
+        if (Game.currentFigure != null)
+            Game.currentFigure.GetComponent<Grup>()?.RemoveFigureFromGrid();
+
         if (GridGenerator.grid != null)
             GridGenerator.DeleteAllBoxes();
+
+        if (Game.isGameStarted && Game.gameInstance != null)
+            Game.gameInstance.SpawnRandomFigure();
 
         Game._linesCounter = 0;
     }
@@ -202,7 +208,7 @@ public class RoundFlowManager : MonoBehaviour
     private int GetPlayerXpForCompletedRound()
     {
         // Esta XP alimenta el nivel global / reward track.
-        // Puede ser fijo para que cada ronda equivalga a un nivel si así quieres.
+        // Puede ser fijo para que cada ronda equivalga a un nivel si asÃ­ quieres.
         return 100;
     }
 
@@ -222,6 +228,19 @@ public class RoundFlowManager : MonoBehaviour
         CurrentRound = PlayerPrefs.GetInt(SaveKeyRound, 1);
     }
 
+    public void ResetForGameRestart()
+    {
+        State = RoundState.Playing;
+        CurrentRoundXp = 0;
+        RequiredRoundXp = GetRequiredXpForRound(CurrentRound);
+
+        Game.isPaused = false;
+        Time.timeScale = 1f;
+
+        OnRoundStarted?.Invoke(CurrentRound);
+        OnRoundXpChanged?.Invoke(CurrentRoundXp, RequiredRoundXp);
+    }
+
 #if UNITY_EDITOR
     [ContextMenu("Debug Complete Round")]
     private void DebugCompleteRound()
@@ -237,13 +256,10 @@ public class RoundFlowManager : MonoBehaviour
         PlayerPrefs.DeleteKey(SaveKeyRound);
 
         CurrentRound = 1;
-        CurrentRoundXp = 0;
-        RequiredRoundXp = GetRequiredXpForRound(CurrentRound);
+        ResetForGameRestart();
 
-        State = RoundState.Playing;
-
-        Game.isPaused = false;
-        Time.timeScale = 1f;
+        if (Game.currentFigure != null)
+            Game.currentFigure.GetComponent<Grup>()?.RemoveFigureFromGrid();
 
         if (GridGenerator.grid != null)
             GridGenerator.DeleteAllBoxes();
@@ -255,6 +271,9 @@ public class RoundFlowManager : MonoBehaviour
 
         OnRoundStarted?.Invoke(CurrentRound);
         OnRoundXpChanged?.Invoke(CurrentRoundXp, RequiredRoundXp);
+
+        if (Game.isGameStarted && Game.gameInstance != null)
+            Game.gameInstance.SpawnRandomFigure();
 
         Debug.Log("[Debug] Rounds reset.");
 #endif

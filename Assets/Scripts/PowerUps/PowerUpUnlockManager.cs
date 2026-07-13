@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class PowerUpUnlockManager : MonoBehaviour
 {
+    public static event Action<PowerUpDefinition> OnPowerUpUnlocked;
     public static PowerUpUnlockManager I { get; private set; }
 
     [SerializeField] private List<PowerUpDefinition> powerUps = new();
@@ -55,6 +57,7 @@ public class PowerUpUnlockManager : MonoBehaviour
         Save();
 
         Debug.Log($"[PowerUps] Unlocked: {powerUp.displayName}");
+        OnPowerUpUnlocked?.Invoke(powerUp);
         return true;
     }
 

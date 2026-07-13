@@ -73,6 +73,8 @@ public class Game : MonoBehaviour
     {
         gameInstance = this;
 
+        TutorialManager.EnsureExists();
+
         if (musicSystemInstance == null)
         {
             musicSystemInstance = Instantiate(musicSystem).GetComponent<MusicSystem>();
@@ -138,6 +140,7 @@ public class Game : MonoBehaviour
 
     public void Restart()
     {
+        RoundFlowManager.I?.ResetForGameRestart();
         ResetStaticState();
         GridGenerator.ResetGrid();
 
@@ -219,6 +222,77 @@ public class Game : MonoBehaviour
         currentFigure = obj;
 
         return obj;
+    }
+
+    public void SetupGuidedFirstLine()
+    {
+        if (GridGenerator.grid == null || figures == null || figures.Length == 0)
+            return;
+
+        if (currentFigure != null)
+            currentFigure.GetComponent<Grup>()?.RemoveFigureFromGrid();
+
+        GridGenerator.DeleteAllBoxes();
+
+        Transform blockTemplate = figures[0].childCount > 0 ? figures[0].GetChild(0) : null;
+        if (blockTemplate == null)
+            return;
+
+        GameObject guidedBlocks = new GameObject("GuidedFirstLine");
+        // Deja cuatro huecos centrales. La pieza I inicial encaja al girarla una vez.
+        for (int x = 0; x < GridGenerator.colums; x++)
+        {
+            if (x >= 3 && x <= 6)
+                continue;
+
+            Transform block = Instantiate(blockTemplate, new Vector3(x, 0f, 0f), Quaternion.identity, guidedBlocks.transform);
+            block.name = $"GuidedBlock_{x}";
+            GridGenerator.grid[x, 0] = block;
+        }
+
+        SpawnFigure(Grup.FigureType.I);
+    }
+
+    public void SetupPowerUpTutorialBoard(PowerUpType powerUpType)
+    {
+        if (GridGenerator.grid == null || figures == null || figures.Length == 0)
+            return;
+
+        if (currentFigure != null)
+            currentFigure.GetComponent<Grup>()?.RemoveFigureFromGrid();
+
+        GridGenerator.DeleteAllBoxes();
+
+        Transform blockTemplate = figures[0].childCount > 0 ? figures[0].GetChild(0) : null;
+        if (blockTemplate == null) return;
+
+        GameObject tutorialBlocks = new GameObject("PowerUpTutorialBoard");
+
+        if (powerUpType == PowerUpType.ClearColumn)
+        {
+            // Columna visible para demostrar el borrado vertical.
+            for (int y = 0; y < 7; y++)
+                CreateTutorialBlock(blockTemplate, tutorialBlocks.transform, 5, y);
+        }
+        else
+        {
+            // Fila casi completa: el power-up de celda se suelta en x=5.
+            for (int x = 0; x < GridGenerator.colums; x++)
+            {
+                if (x == 5)
+                    continue;
+                CreateTutorialBlock(blockTemplate, tutorialBlocks.transform, x, 0);
+            }
+        }
+
+        SpawnRandomFigure();
+    }
+
+    private static void CreateTutorialBlock(Transform template, Transform parent, int x, int y)
+    {
+        Transform block = Instantiate(template, new Vector3(x, y, 0f), Quaternion.identity, parent);
+        block.name = $"PowerUpGuide_{x}_{y}";
+        GridGenerator.grid[x, y] = block;
     }
 
     private void _initLevels()

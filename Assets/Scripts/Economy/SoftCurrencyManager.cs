@@ -54,6 +54,16 @@ public class SoftCurrencyManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    public void DebugResetCurrency()
+    {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        Coins = 0;
+        PlayerPrefs.DeleteKey(SaveKey);
+        PlayerPrefs.Save();
+        OnCoinsChanged?.Invoke(Coins);
+#endif
+    }
+
 #if UNITY_EDITOR
     [ContextMenu("Debug Add 500 Coins")]
     private void DebugAddCoins()

@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Grup : MonoBehaviour
 {
+    public enum PlayerMove { Horizontal, Rotate, HardDrop }
+    public static event Action<PlayerMove> OnPlayerMove;
     public Game gameController;
     public Transform boxSelected;
     public Transform trail;
@@ -97,6 +100,7 @@ public class Grup : MonoBehaviour
         // See if it's valid
         if (IsValidGridPos(this.transform))
         {
+            OnPlayerMove?.Invoke(PlayerMove.Horizontal);
             // It's valid. Update grid.
             UpdateGrid();
             if (gameController.soundSystemInstance != null)
@@ -120,6 +124,7 @@ public class Grup : MonoBehaviour
         // See if valid
         if (IsValidGridPos(this.transform))
         {
+            OnPlayerMove?.Invoke(PlayerMove.Rotate);
             // It's valid. Update grid.
             UpdateGrid();
         }
@@ -127,6 +132,7 @@ public class Grup : MonoBehaviour
         {
             if(CheckValidRotate(transform.position))
             {
+                OnPlayerMove?.Invoke(PlayerMove.Rotate);
                 // It's valid. Update grid.
                 UpdateGrid();
                 if (gameController.soundSystemInstance != null)
@@ -211,6 +217,7 @@ public class Grup : MonoBehaviour
 
     void FallHard()
     {
+        OnPlayerMove?.Invoke(PlayerMove.HardDrop);
         bool fall = true;
         while (fall)
         {

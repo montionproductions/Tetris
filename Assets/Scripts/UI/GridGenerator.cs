@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 [ExecuteInEditMode]
 public class GridGenerator : MonoBehaviour
 {
+    public static event Action<Vector3, int> OnLineCompleted;
     public float displacement = .95f;
     public static int rows = 20;
     public static int colums = 10;
@@ -156,9 +158,13 @@ public class GridGenerator : MonoBehaviour
         {
             if (IsRowFull(y))
             {
+                Vector3 lineCenter = grid[colums / 2, y] != null
+                    ? grid[colums / 2, y].position
+                    : new Vector3(colums * .5f, y, 0f);
                 DeleteRow(y);
                 DecreaseRowsAbove(y + 1);
                 GameObject.FindObjectOfType<UIController>().AddLine(1);
+                OnLineCompleted?.Invoke(lineCenter, 25);
                 linePosition = y;
                 Game._linesCounter++;
                 --y;

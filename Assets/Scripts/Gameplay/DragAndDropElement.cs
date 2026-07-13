@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class DragAndDropElement : MonoBehaviour
 {
+    public static event Action<PowerUpType> OnPowerUpUsed;
     private Color mouseOverColor = Color.blue;
     private Color originalColor = Color.yellow;
     private bool dragging = false;
@@ -78,6 +80,8 @@ public class DragAndDropElement : MonoBehaviour
 
             Game.currentFigure.GetComponent<Grup>().UpdateGrup();
 
+            OnPowerUpUsed?.Invoke(PowerUpType.CompleteRow);
+
             Destroy(this);
         }
         else
@@ -99,6 +103,8 @@ public class DragAndDropElement : MonoBehaviour
 
             Game.currentFigure.GetComponent<Grup>().UpdateGrup();
 
+            OnPowerUpUsed?.Invoke(PowerUpType.DeleteColum);
+
             Destroy(this.gameObject);
         }
         else
@@ -118,6 +124,8 @@ public class DragAndDropElement : MonoBehaviour
             GameObject.FindObjectOfType<PowerUpsMenu>().RemovePowerUp(PowerUpType.DeleteRow);
 
             Game.currentFigure.GetComponent<Grup>().UpdateGrup();
+
+            OnPowerUpUsed?.Invoke(PowerUpType.DeleteRow);
 
             Destroy(this.gameObject);
         }

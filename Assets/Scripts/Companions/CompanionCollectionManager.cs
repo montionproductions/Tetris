@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class CompanionCollectionManager : MonoBehaviour
 {
+    public static event Action<CompanionDefinition> OnCompanionUnlocked;
     public static CompanionCollectionManager I { get; private set; }
 
     [SerializeField] private List<CompanionDefinition> companions = new();
@@ -24,6 +26,14 @@ public class CompanionCollectionManager : MonoBehaviour
         I = this;
         DontDestroyOnLoad(gameObject);
         Load();
+    }
+
+    private void Start()
+    {
+        // Migra partidas anteriores: un companion desbloqueado siempre concede su power-up.
+        foreach (CompanionDefinition companion in companions)
+            if (companion != null && IsUnlocked(companion.id) && !string.IsNullOrEmpty(companion.linkedPowerUpId))
+                PowerUpUnlockManager.I?.UnlockPowerUp(companion.linkedPowerUpId);
     }
 
     public CompanionDefinition FindCompanionById(string companionId)
@@ -63,7 +73,11 @@ public class CompanionCollectionManager : MonoBehaviour
 
         Save();
 
+        if (!string.IsNullOrEmpty(companion.linkedPowerUpId))
+            PowerUpUnlockManager.I?.UnlockPowerUp(companion.linkedPowerUpId);
+
         Debug.Log($"[Companions] Unlocked companion: {companion.displayName}");
+        OnCompanionUnlocked?.Invoke(companion);
         return true;
     }
 

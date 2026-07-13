@@ -5,6 +5,8 @@ using TMPro;
 
 public class RewardRevealOverlay : MonoBehaviour
 {
+    public static event Action<LevelRewardDefinition> OnRewardShown;
+    public static event Action<LevelRewardDefinition> OnRewardRedeemed;
     public static RewardRevealOverlay I { get; private set; }
 
     [SerializeField] private GameObject root;
@@ -14,6 +16,7 @@ public class RewardRevealOverlay : MonoBehaviour
     [SerializeField] private Button continueButton;
 
     private Action onContinue;
+    private LevelRewardDefinition currentReward;
 
     private void Awake()
     {
@@ -40,6 +43,7 @@ public class RewardRevealOverlay : MonoBehaviour
         Debug.Log($"[RewardRevealOverlay] Show reward: {reward.title} / {reward.rewardId} / {reward.rewardType}");
 
         onContinue = continueCallback;
+        currentReward = reward;
 
         // Limpia contenido viejo primero
         if (titleText != null)
@@ -71,14 +75,24 @@ public class RewardRevealOverlay : MonoBehaviour
             root.SetActive(true);
         else
             gameObject.SetActive(true);
+
+        TMP_Text buttonLabel = continueButton != null ? continueButton.GetComponentInChildren<TMP_Text>() : null;
+        if (buttonLabel != null)
+            buttonLabel.text = "REDIMIR";
+
+        OnRewardShown?.Invoke(reward);
     }
 
     private void Continue()
     {
+        LevelRewardDefinition redeemedReward = currentReward;
         Hide();
 
         Action callback = onContinue;
         onContinue = null;
+        currentReward = null;
+
+        OnRewardRedeemed?.Invoke(redeemedReward);
 
         callback?.Invoke();
     }
